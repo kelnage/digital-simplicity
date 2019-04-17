@@ -1,0 +1,81 @@
+# AngelCode Bitmap Font Generator configuration file
+fileVersion=1
+
+# font settings
+fontName=Consolas
+fontFile=
+charSet=0
+fontSize=18
+aa=1
+scaleH=100
+useSmoothing=1
+isBold=0
+isItalic=0
+useUnicode=1
+disableBoxChars=1
+outputInvalidCharGlyph=0
+dontIncludeKerningPairs=0
+useHinting=1
+renderFromOutline=0
+useClearType=1
+
+# character alignment
+paddingDown=0
+paddingUp=0
+paddingRight=1
+paddingLeft=1
+spacingHoriz=1
+spacingVert=1
+useFixedHeight=0
+forceZero=0
+
+# output file
+outWidth=256
+outHeight=256
+outBitDepth=8
+fontDescFormat=0
+fourChnlPacked=0
+textureFormat=png
+textureCompression=0
+alphaChnl=1
+redChnl=0
+greenChnl=0
+blueChnl=0
+invA=0
+invR=0
+invG=0
+invB=0
+
+# outline
+outlineThickness=0
+
+# selected chars
+chars=32,48-57,97,100-102,104-105,109-112,114-117,119
+
+# imported icon images
+icon="zero.png",48,0,0,0
+icon="one.png",49,0,0,0
+icon="two.png",50,0,0,0
+icon="three.png",51,0,0,0
+icon="four.png",52,0,0,0
+icon="five.png",53,0,0,0
+icon="six.png",54,0,0,0
+icon="seven.png",55,0,0,0
+icon="eight.png",56,0,0,0
+icon="nine.png",57,0,0,0
+icon="space.png",32,0,0,0
+icon="a.png",97,0,0,0
+icon="d.png",100,0,0,0
+icon="e.png",101,0,0,0
+icon="f.png",102,0,0,0
+icon="h.png",104,0,0,0
+icon="i.png",105,0,0,0
+icon="m.png",109,0,0,0
+icon="n.png",110,0,0,0
+icon="o.png",111,0,0,0
+icon="p.png",112,0,0,0
+icon="r.png",114,0,0,0
+icon="s.png",115,0,0,0
+icon="t.png",116,0,0,0
+icon="u.png",117,0,0,0
+icon="w.png",119,0,0,0

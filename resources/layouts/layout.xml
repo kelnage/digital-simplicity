@@ -1,0 +1,37 @@
+<layout id="WatchFace">
+	<drawable class="Background" />
+	<label id="TopLabel" x="120" y="5" font="Graphics.FONT_TINY"
+		justification="Graphics.TEXT_JUSTIFY_CENTER"
+		color="Graphics.COLOR_LT_GRAY" />
+
+	<label id="NotificationCountLabel" x="55" y="58"
+		font="@Fonts.DigitalFontSmall"
+		justification="Graphics.TEXT_JUSTIFY_LEFT"
+		color="Graphics.COLOR_BLACK" />
+	<label id="BatteryLabel" x="170" y="58"
+		font="@Fonts.DigitalFontSmall"
+		justification="Graphics.TEXT_JUSTIFY_RIGHT"
+		color="Graphics.COLOR_BLACK" />
+
+	<label id="DateLabel" x="205" y="90"
+		font="@Fonts.DigitalFontSmall"
+		justification="Graphics.TEXT_JUSTIFY_RIGHT"
+		color="Graphics.COLOR_BLACK" />
+
+	<label id="PeriodLabel" x="38" y="152"
+		font="@Fonts.DigitalFontSmall"
+		justification="Graphics.TEXT_JUSTIFY_LEFT"
+		color="Graphics.COLOR_BLACK" />
+	<label id="HoursLabel" x="138" y="122"
+		font="@Fonts.DigitalFontLarge"
+		justification="Graphics.TEXT_JUSTIFY_RIGHT"
+		color="Graphics.COLOR_BLACK" />
+	<label id="MinutesLabel" x="210" y="122"
+		font="@Fonts.DigitalFontLarge"
+		justification="Graphics.TEXT_JUSTIFY_RIGHT"
+		color="Graphics.COLOR_BLACK" />
+
+	<label id="BottomLabel" x="120" y="205" font="Graphics.FONT_TINY"
+		justification="Graphics.TEXT_JUSTIFY_CENTER"
+		color="Graphics.COLOR_LT_GRAY" />
+</layout>

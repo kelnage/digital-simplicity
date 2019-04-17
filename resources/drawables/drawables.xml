@@ -1,0 +1,13 @@
+<drawables>
+	<bitmap id="LauncherIcon" filename="launcher_icon.png" />
+	<bitmap id="BluetoothIcon" filename="bt_simple.png" />
+	<bitmap id="BatteryFullIcon" filename="battery_full.png" />
+	<bitmap id="BatteryHalfIcon" filename="battery_half.png" />
+	<bitmap id="BatteryLowIcon" filename="battery_low.png" />
+	<drawable-list id="MainBackground"
+		background="Gfx.COLOR_BLACK">
+		<shape type="rectangle" x="0" y="40" height="160" width="240"
+			color="Gfx.COLOR_LT_GRAY" />
+		<bitmap id="Trim" filename="trim.png" x="4" y="43" />
+	</drawable-list>
+</drawables>
