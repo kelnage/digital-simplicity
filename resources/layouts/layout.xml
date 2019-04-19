@@ -8,28 +8,32 @@
 		font="@Fonts.DigitalFontSmall"
 		justification="Graphics.TEXT_JUSTIFY_LEFT"
 		color="Graphics.COLOR_BLACK" />
-	<label id="BatteryLabel" x="170" y="58"
+	<label id="BatteryLabel" x="173" y="58"
 		font="@Fonts.DigitalFontSmall"
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" />
 
-	<label id="DateLabel" x="205" y="90"
+	<label id="DateLabel" x="208" y="90"
 		font="@Fonts.DigitalFontSmall"
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" />
 
-	<label id="PeriodLabel" x="38" y="152"
+	<label id="PeriodLabel" x="38" y="163"
 		font="@Fonts.DigitalFontSmall"
 		justification="Graphics.TEXT_JUSTIFY_LEFT"
 		color="Graphics.COLOR_BLACK" />
-	<label id="HoursLabel" x="138" y="122"
+	<label id="TimeLabel" x="210" y="120"
 		font="@Fonts.DigitalFontLarge"
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" />
-	<label id="MinutesLabel" x="210" y="122"
+	<!--  <label id="HoursLabel" x="138" y="120"
 		font="@Fonts.DigitalFontLarge"
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" />
+	<label id="MinutesLabel" x="210" y="120"
+		font="@Fonts.DigitalFontLarge"
+		justification="Graphics.TEXT_JUSTIFY_RIGHT"
+		color="Graphics.COLOR_BLACK" /> -->
 
 	<label id="BottomLabel" x="120" y="205" font="Graphics.FONT_TINY"
 		justification="Graphics.TEXT_JUSTIFY_CENTER"

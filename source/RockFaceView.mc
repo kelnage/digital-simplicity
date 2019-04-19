@@ -36,7 +36,7 @@ class RockFaceView extends WatchUi.WatchFace {
 
     // Load your resources here
     function onLayout(dc) {
-        var batteryX = 175;
+        var batteryX = 178;
         var batteryY = 58;
         var bluetoothX = 38;
         var bluetoothY = 59;
@@ -80,6 +80,7 @@ class RockFaceView extends WatchUi.WatchFace {
         var activity = ActivityMonitor.getInfo();
 
         // Formatting
+        var timeFormat = "$1$:$2$";
         var dateFormat = "$1$ $2$";
         var period = "";
 
@@ -101,6 +102,7 @@ class RockFaceView extends WatchUi.WatchFace {
                 hours = hours.format("%02d");
             }
         }
+        var timeString = Lang.format(timeFormat, [hours, minutes]);
 
         // Format notification count
         var nc = settings.notificationCount;
@@ -115,8 +117,9 @@ class RockFaceView extends WatchUi.WatchFace {
         var batteryString = stats.battery.format("%d") + "%";
 
         // Update the views
-        var hoursView = View.findDrawableById("HoursLabel");
-        var minutesView = View.findDrawableById("MinutesLabel");
+        var timeView = View.findDrawableById("TimeLabel");
+        // var hoursView = View.findDrawableById("HoursLabel");
+        // var minutesView = View.findDrawableById("MinutesLabel");
         var dateView = View.findDrawableById("DateLabel");
         var periodView = View.findDrawableById("PeriodLabel");
         var notificationView = View.findDrawableById("NotificationCountLabel");
@@ -124,8 +127,9 @@ class RockFaceView extends WatchUi.WatchFace {
         var topView = View.findDrawableById("TopLabel");
         var bottomView = View.findDrawableById("BottomLabel");
 
-        hoursView.setText(hours + "");
-        minutesView.setText(minutes);
+        timeView.setText(timeString);
+        // hoursView.setText(hours + "");
+        // minutesView.setText(minutes);
         dateView.setText(dateString.toLower());
         periodView.setText(period);
         notificationView.setText(ncs);

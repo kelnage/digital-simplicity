@@ -8,6 +8,6 @@
 		background="Gfx.COLOR_BLACK">
 		<shape type="rectangle" x="0" y="40" height="160" width="240"
 			color="Gfx.COLOR_LT_GRAY" />
-		<bitmap id="Trim" filename="trim.png" x="4" y="43" />
+		<bitmap id="Trim" filename="trim.png" x="4" y="44" />
 	</drawable-list>
 </drawables>

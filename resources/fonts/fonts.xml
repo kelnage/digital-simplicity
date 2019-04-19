@@ -1,6 +1,6 @@
 <resources>
 	<font id="DigitalFontLarge" filename="digital_fnt.fnt"
-		filter="0123456789" />
+		filter="0123456789:" />
 	<font id="DigitalFontSmall" filename="digital_fnt_sml.fnt"
 		filter="%0123456789 adefhimnoprstuw" />
 </resources>
