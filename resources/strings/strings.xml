@@ -20,4 +20,32 @@
 
 	<string id="AppName">RockFace</string>
 
+	<string id="TopStat">Top value</string>
+	<string id="BottomStat">Bottom value</string>
+
+	<string id="Calories">Calories</string>
+	<string id="CaloriesFormat">$1$ kcal</string>
+	<string id="Kilojoules">Kilojoules</string>
+	<string id="KilojoulesFormat">$1$kJ</string>
+	<string id="Steps">Steps</string>
+	<string id="StepsFormat">$1$ steps</string>
+	<string id="DistanceMeters">Distance (metres)</string>
+	<string id="DistanceMetersFormat">$1$m</string>
+	<string id="DistanceFeet">Distance (feet)</string>
+	<string id="DistanceFeetFormat">$1$ft</string>
+	<string id="ActivityMinDay">Activity minutes (day)</string>
+	<string id="ActivityMinFormat">$1$min</string>
+	<string id="ActivityMinWeek">Activity minutes (week)</string>
+	<string id="FloorsClimbed">Floors climbed</string>
+	<string id="FloorsClimbedFormat">$1$ floors</string>
+	<string id="MovementBar">Movement number</string>
+	<string id="MovementBarFormat">$1$</string>
+	<string id="MovementBarOne">Get up!</string>
+	<string id="MovementBarTwo">Get on up!</string>
+	<string id="MovementBarThree">Get up!!</string>
+	<string id="MovementBarFour">Get on up!!</string>
+	<string id="MovementBarFive">Dance!</string>
+	<string id="HeartRate">Heart rate</string>
+	<string id="HeartRateFormat">$1$ BPM</string>
+
 </strings>

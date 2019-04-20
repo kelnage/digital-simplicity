@@ -28,6 +28,10 @@ class RockFaceView extends WatchUi.WatchFace {
     var bluetoothIcon;
     var batteryIcon;
     var batteryDrawable = Rez.Drawables.BatteryFullIcon;
+    var topFormat;
+    var bottomFormat;
+    var barFormatList;
+    var moveStringsList;
 
     function initialize() {
         WatchFace.initialize();
@@ -35,6 +39,16 @@ class RockFaceView extends WatchUi.WatchFace {
 
     // Load your resources here
     function onLayout(dc) {
+        barFormatList = [WatchUi.loadResource(Rez.Strings.CaloriesFormat),
+            WatchUi.loadResource(Rez.Strings.KilojoulesFormat),
+            WatchUi.loadResource(Rez.Strings.StepsFormat),
+            WatchUi.loadResource(Rez.Strings.DistanceMetersFormat),
+            WatchUi.loadResource(Rez.Strings.DistanceFeetFormat),
+            WatchUi.loadResource(Rez.Strings.ActivityMinFormat),
+            WatchUi.loadResource(Rez.Strings.ActivityMinFormat),
+            WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat),
+            WatchUi.loadResource(Rez.Strings.MovementBarFormat),
+            WatchUi.loadResource(Rez.Strings.HeartRateFormat)];
         var batteryX = 178;
         var batteryY = 58;
         var bluetoothX = 38;
@@ -49,6 +63,12 @@ class RockFaceView extends WatchUi.WatchFace {
             :locX=>bluetoothX,
             :locY=>bluetoothY
         });
+        moveStringsList = ["",
+            WatchUi.loadResource(Rez.Strings.MovementBarOne),
+            WatchUi.loadResource(Rez.Strings.MovementBarTwo),
+            WatchUi.loadResource(Rez.Strings.MovementBarThree),
+            WatchUi.loadResource(Rez.Strings.MovementBarFour),
+            WatchUi.loadResource(Rez.Strings.MovementBarFive)];
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
@@ -66,6 +86,7 @@ class RockFaceView extends WatchUi.WatchFace {
         var settings = System.getDeviceSettings();
         var stats = System.getSystemStats();
         var activity = ActivityMonitor.getInfo();
+        var app = Application.getApp();
 
         // Formatting
         var timeFormat = "$1$:$2$";
@@ -104,6 +125,10 @@ class RockFaceView extends WatchUi.WatchFace {
         // Format battery percentage
         var batteryString = stats.battery.format("%d") + "%";
 
+        // Load appropriate stats
+        var topStatString = getStatString(app.getProperty("TopBarStat"), activity);
+        var bottomStatString = getStatString(app.getProperty("BottomBarStat"), activity);
+
         // Update the views
         var timeView = View.findDrawableById("TimeLabel");
         // var hoursView = View.findDrawableById("HoursLabel");
@@ -112,6 +137,7 @@ class RockFaceView extends WatchUi.WatchFace {
         var periodView = View.findDrawableById("PeriodLabel");
         var notificationView = View.findDrawableById("NotificationCountLabel");
         var batteryView = View.findDrawableById("BatteryLabel");
+
         var topView = View.findDrawableById("TopLabel");
         var bottomView = View.findDrawableById("BottomLabel");
 
@@ -122,25 +148,69 @@ class RockFaceView extends WatchUi.WatchFace {
         periodView.setText(period);
         notificationView.setText(ncs);
         batteryView.setText(batteryString);
-        topView.setText("- " + activity.calories + " -");
-        bottomView.setText("- " + activity.steps + " -");
+
+        topView.setText(topStatString);
+        bottomView.setText(bottomStatString);
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
 
-        // Draw optional icons
-        if(settings.phoneConnected) {
-            bluetoothIcon.draw(dc);
-        }
         var nextBatteryDrawable = checkBattery(stats.battery);
         if(nextBatteryDrawable != batteryDrawable) {
             batteryDrawable = nextBatteryDrawable;
             batteryIcon.setBitmap(batteryDrawable);
         }
         batteryIcon.draw(dc);
+        // Draw optional icons
+        if(settings.phoneConnected) {
+            bluetoothIcon.draw(dc);
+        }
     }
 
-    // Designed to use less battery as available power decreases
+    function getStatString(index, activity) {
+        return Lang.format(barFormatList[index], getStat(index, activity));
+    }
+
+    function getStat(index, activity) {
+        switch(index) {
+            case 0:
+                return [activity.calories];
+            case 1:
+                return [Math.floor(activity.calories * 4.184).format("%d")];
+            case 2:
+                return [activity.steps];
+            case 3:
+                return [Math.floor(activity.distance / 100).format("%d")];
+            case 4:
+                return [Math.floor(activity.distance / 30.48).format("%d")];
+            case 5:
+                return [activity.activeMinutesDay];
+            case 6:
+                return [activity.activeMinutesWeek];
+            case 7:
+                return [activity.floorsClimbed];
+            case 8:
+                return [moveStringsList[activity.moveBarLevel]];
+            case 9:
+                var hrIterator = activity.getHeartRateHistory(5, true);
+                var total = 0;
+                var count = 0;
+                for(var i = 0; i < 5; i++) {
+                    var sample = hrIterator.next();
+                    if(sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
+                        total += sample.heartRate;
+                        count += 1;
+                    }
+                }
+                if(count > 0) {
+                    return [Math.floor(total / count)];
+                }
+                return [""];
+        }
+        return null;
+    }
+
+    // Designed to use slightly less battery as available power decreases
     function checkBattery(batteryLevel) {
         if(batteryLevel < 10) {
             return Rez.Drawables.BatteryLowIcon;

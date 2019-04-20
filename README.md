@@ -29,7 +29,7 @@ In theory, RockFace also should work on any of the following:
 
 ## Things TODO
 
-- [ ] Add options for top and bottom labels (HR, distance), and appropriate suffixes
+- [X] Add options for top and bottom labels (HR, distance), and appropriate suffixes
 - [X] Increase clock size
 - [X] Add a (blinking?) colon between hours and minutes
 - [ ] Performance improvements
