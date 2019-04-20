@@ -26,11 +26,8 @@ using Toybox.ActivityMonitor;
 
 class RockFaceView extends WatchUi.WatchFace {
     var bluetoothIcon;
-    var batteryFullIcon;
-    var batteryThreeQuartersIcon;
-    var batteryHalfIcon;
-    var batteryOneQuarterIcon;
-    var batteryLowIcon;
+    var batteryIcon;
+    var batteryDrawable = Rez.Drawables.BatteryFullIcon;
 
     function initialize() {
         WatchFace.initialize();
@@ -42,36 +39,15 @@ class RockFaceView extends WatchUi.WatchFace {
         var batteryY = 58;
         var bluetoothX = 38;
         var bluetoothY = 59;
-
+        batteryIcon = new WatchUi.Bitmap({
+            :rezId=>batteryDrawable,
+            :locX=>batteryX,
+            :locY=>batteryY
+        });
         bluetoothIcon = new WatchUi.Bitmap({
             :rezId=>Rez.Drawables.BluetoothIcon,
             :locX=>bluetoothX,
             :locY=>bluetoothY
-        });
-        batteryFullIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BatteryFullIcon,
-            :locX=>batteryX,
-            :locY=>batteryY
-        });
-        batteryThreeQuartersIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BatteryThreeQuartersIcon,
-            :locX=>batteryX,
-            :locY=>batteryY
-        });
-        batteryHalfIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BatteryHalfIcon,
-            :locX=>batteryX,
-            :locY=>batteryY
-        });
-        batteryOneQuarterIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BatteryOneQuarterIcon,
-            :locX=>batteryX,
-            :locY=>batteryY
-        });
-        batteryLowIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BatteryLowIcon,
-            :locX=>batteryX,
-            :locY=>batteryY
         });
         setLayout(Rez.Layouts.WatchFace(dc));
     }
@@ -156,17 +132,26 @@ class RockFaceView extends WatchUi.WatchFace {
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
         }
-        if(stats.battery < 10) {
-            batteryLowIcon.draw(dc);
-        } else if(stats.battery < 33) {
-            batteryOneQuarterIcon.draw(dc);
-        } else if(stats.battery < 66) {
-            batteryHalfIcon.draw(dc);
-        } else if(stats.battery < 90) {
-            batteryThreeQuartersIcon.draw(dc);
-        } else {
-            batteryFullIcon.draw(dc);
+        var nextBatteryDrawable = checkBattery(stats.battery);
+        if(nextBatteryDrawable != batteryDrawable) {
+            batteryDrawable = nextBatteryDrawable;
+            batteryIcon.setBitmap(batteryDrawable);
         }
+        batteryIcon.draw(dc);
+    }
+
+    // Designed to use less battery as available power decreases
+    function checkBattery(batteryLevel) {
+        if(batteryLevel < 10) {
+            return Rez.Drawables.BatteryLowIcon;
+        } else if(batteryLevel < 33) {
+            return Rez.Drawables.BatteryOneQuarterIcon;
+        } else if(batteryLevel < 66) {
+            return Rez.Drawables.BatteryHalfIcon;
+        } else if(batteryLevel < 90) {
+            return Rez.Drawables.BatteryThreeQuartersIcon;
+        }
+        return Rez.Drawables.BatteryFullIcon;
     }
 
     // Called when this View is removed from the screen. Save the
