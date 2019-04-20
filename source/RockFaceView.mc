@@ -27,7 +27,9 @@ using Toybox.ActivityMonitor;
 class RockFaceView extends WatchUi.WatchFace {
     var bluetoothIcon;
     var batteryFullIcon;
+    var batteryThreeQuartersIcon;
     var batteryHalfIcon;
+    var batteryOneQuarterIcon;
     var batteryLowIcon;
 
     function initialize() {
@@ -51,8 +53,18 @@ class RockFaceView extends WatchUi.WatchFace {
             :locX=>batteryX,
             :locY=>batteryY
         });
+        batteryThreeQuartersIcon = new WatchUi.Bitmap({
+            :rezId=>Rez.Drawables.BatteryThreeQuartersIcon,
+            :locX=>batteryX,
+            :locY=>batteryY
+        });
         batteryHalfIcon = new WatchUi.Bitmap({
             :rezId=>Rez.Drawables.BatteryHalfIcon,
+            :locX=>batteryX,
+            :locY=>batteryY
+        });
+        batteryOneQuarterIcon = new WatchUi.Bitmap({
+            :rezId=>Rez.Drawables.BatteryOneQuarterIcon,
             :locX=>batteryX,
             :locY=>batteryY
         });
@@ -144,10 +156,14 @@ class RockFaceView extends WatchUi.WatchFace {
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
         }
-        if(stats.battery < 25) {
+        if(stats.battery < 10) {
             batteryLowIcon.draw(dc);
-        } else if(stats.battery < 75) {
+        } else if(stats.battery < 33) {
+            batteryOneQuarterIcon.draw(dc);
+        } else if(stats.battery < 66) {
             batteryHalfIcon.draw(dc);
+        } else if(stats.battery < 90) {
+            batteryThreeQuartersIcon.draw(dc);
         } else {
             batteryFullIcon.draw(dc);
         }
