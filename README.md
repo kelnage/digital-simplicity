@@ -30,8 +30,9 @@ In theory, RockFace also should work on any of the following:
 ## Things TODO
 
 - [ ] Add options for top and bottom labels (HR, distance), and appropriate suffixes
-- [ ] Increase clock size
-- [ ] Add a (blinking?) colon between hours and minutes
+- [X] Increase clock size
+- [X] Add a (blinking?) colon between hours and minutes
 - [ ] Performance improvements
 - [ ] Internationalisation?
 - [ ] Release to CIQ
+- [ ] Make notification count bold?
