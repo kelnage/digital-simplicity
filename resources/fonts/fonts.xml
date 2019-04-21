@@ -17,8 +17,10 @@
 
  -->
  <resources>
-	<font id="DigitalFontLarge" filename="digital_fnt.fnt"
+	<font id="DigitalLarge" filename="digital_fnt.fnt"
 		filter="0123456789:" />
-	<font id="DigitalFontSmall" filename="digital_fnt_sml.fnt"
+	<font id="DigitalSmall" filename="digital_fnt_sml.fnt"
+		filter="%0123456789 adefhimnoprstuw" />
+	<font id="DigitalSmallBold" filename="digital_fnt_sml_bold.fnt"
 		filter="%0123456789 adefhimnoprstuw" />
 </resources>
