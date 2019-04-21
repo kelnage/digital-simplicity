@@ -24,6 +24,7 @@
 	<bitmap id="BatteryHalfIcon" filename="battery_half.png" />
 	<bitmap id="BatteryOneQuarterIcon" filename="battery_one_quarter.png" />
 	<bitmap id="BatteryLowIcon" filename="battery_low.png" />
+	<bitmap id="Colon" filename="colon.png" />
 	<drawable-list id="MainBackground"
 		background="Gfx.COLOR_BLACK">
 		<shape type="rectangle" x="0" y="40" height="160" width="240"
