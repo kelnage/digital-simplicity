@@ -1,16 +1,10 @@
-# RockFace
+# Digital Simplicity
 
-A small-stone inspired watch face for round Garmin devices. Only currently supports watches that have a screen resolution of 240x240px.
+A simple, yet useful, watchface for round Garmin devices. Only currently supports round watches that have a screen resolution of 240x240px.
 
 ## Device support
 
-RockFace is compiled for the following Garmin devices:
-
-- Fenix 5 Plus
-- Forerunner 645
-- Forerunner 645m
-
-In theory, RockFace also should work on any of the following:
+Digital Simplicity should work on any of the following devices (sorry Fenix 5S owners - its screen resolution is 215x215px!):
 
 - Approach S60
 - D2 Charlie
@@ -19,9 +13,12 @@ In theory, RockFace also should work on any of the following:
 - D2 Delta S
 - Descent MK1
 - Fenix 5
-- Fenix 5s Plus
-- Fenix 5x
-- Fenix 5x Plus
+- Fenix 5 Plus
+- Fenix 5S Plus
+- Fenix 5X
+- Fenix 5X Plus
+- Forerunner 645
+- Forerunner 645m
 - Forerunner 935
 - Vivoactive 3
 - Vivoactive 3m
@@ -32,7 +29,7 @@ In theory, RockFace also should work on any of the following:
 - [X] Add options for top and bottom labels (HR, distance), and appropriate suffixes
 - [X] Increase clock size
 - [X] Add a (blinking?) colon between hours and minutes
+- [X] Make notification count bold?
 - [ ] Performance improvements
 - [ ] Internationalisation?
 - [ ] Release to CIQ
-- [ ] Make notification count bold?
