@@ -22,6 +22,7 @@
 
 	<string id="TopStat">Top value</string>
 	<string id="BottomStat">Bottom value</string>
+	<string id="BlinkColon">Blink colon</string>
 
 	<string id="Calories">Calories</string>
 	<string id="CaloriesFormat">$1$ kcal</string>

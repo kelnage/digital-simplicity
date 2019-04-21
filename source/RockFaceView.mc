@@ -25,11 +25,26 @@ using Toybox.Time.Gregorian;
 using Toybox.ActivityMonitor;
 
 class RockFaceView extends WatchUi.WatchFace {
+    // icons
     var bluetoothIcon;
     var batteryIcon;
+    var colonIcon;
     var batteryDrawable = Rez.Drawables.BatteryFullIcon;
+
+    // layout constants
+    const fgColour = Graphics.COLOR_BLACK;
+    const bgColour = Graphics.COLOR_LT_GRAY;
+    const batteryX = 178;
+    const batteryY = 58;
+    const bluetoothX = 38;
+    const bluetoothY = 59;
+    const colonX = 130;
+    const colonY = 120;
+
+    // layout variables
     var topFormat;
     var bottomFormat;
+
     var barFormatList;
     var moveStringsList;
 
@@ -49,10 +64,12 @@ class RockFaceView extends WatchUi.WatchFace {
             WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat),
             WatchUi.loadResource(Rez.Strings.MovementBarFormat),
             WatchUi.loadResource(Rez.Strings.HeartRateFormat)];
-        var batteryX = 178;
-        var batteryY = 58;
-        var bluetoothX = 38;
-        var bluetoothY = 59;
+        moveStringsList = ["",
+            WatchUi.loadResource(Rez.Strings.MovementBarOne),
+            WatchUi.loadResource(Rez.Strings.MovementBarTwo),
+            WatchUi.loadResource(Rez.Strings.MovementBarThree),
+            WatchUi.loadResource(Rez.Strings.MovementBarFour),
+            WatchUi.loadResource(Rez.Strings.MovementBarFive)];
         batteryIcon = new WatchUi.Bitmap({
             :rezId=>batteryDrawable,
             :locX=>batteryX,
@@ -63,12 +80,11 @@ class RockFaceView extends WatchUi.WatchFace {
             :locX=>bluetoothX,
             :locY=>bluetoothY
         });
-        moveStringsList = ["",
-            WatchUi.loadResource(Rez.Strings.MovementBarOne),
-            WatchUi.loadResource(Rez.Strings.MovementBarTwo),
-            WatchUi.loadResource(Rez.Strings.MovementBarThree),
-            WatchUi.loadResource(Rez.Strings.MovementBarFour),
-            WatchUi.loadResource(Rez.Strings.MovementBarFive)];
+        colonIcon = new WatchUi.Bitmap({
+            :rezId=>Rez.Drawables.Colon,
+            :locX=>colonX,
+            :locY=>colonY
+        });
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
@@ -81,6 +97,8 @@ class RockFaceView extends WatchUi.WatchFace {
 
     // Update the view
     function onUpdate(dc) {
+        dc.clearClip();
+
         // Get data
         var now = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
         var settings = System.getDeviceSettings();
@@ -88,30 +106,16 @@ class RockFaceView extends WatchUi.WatchFace {
         var activity = ActivityMonitor.getInfo();
         var app = Application.getApp();
 
+        // System.println(settings.connectionInfo);
+
         // Formatting
         var timeFormat = "$1$:$2$";
         var dateFormat = "$1$ $2$";
-        var period = "";
 
         // Format date and time appropriately
         var dateString = Lang.format(dateFormat, [now.day_of_week, now.day]);
-        var hours = now.hour;
-        var minutes = now.min.format("%02d");
-        if (!settings.is24Hour) {
-            if(hours < 12) {
-                period = "am";
-            } else {
-                period = "pm";
-            }
-            if (hours > 12) {
-                hours = hours - 12;
-            }
-        } else {
-            if (Application.getApp().getProperty("UseMilitaryFormat")) {
-                hours = hours.format("%02d");
-            }
-        }
-        var timeString = Lang.format(timeFormat, [hours, minutes]);
+
+        // var timeString = Lang.format(timeFormat, [hours, minutes]);
 
         // Format notification count
         var nc = settings.notificationCount;
@@ -130,27 +134,21 @@ class RockFaceView extends WatchUi.WatchFace {
         var bottomStatString = getStatString(app.getProperty("BottomBarStat"), activity);
 
         // Update the views
-        var timeView = View.findDrawableById("TimeLabel");
-        // var hoursView = View.findDrawableById("HoursLabel");
-        // var minutesView = View.findDrawableById("MinutesLabel");
+        // var timeView = View.findDrawableById("TimeLabel");
+
         var dateView = View.findDrawableById("DateLabel");
-        var periodView = View.findDrawableById("PeriodLabel");
         var notificationView = View.findDrawableById("NotificationCountLabel");
         var batteryView = View.findDrawableById("BatteryLabel");
-
         var topView = View.findDrawableById("TopLabel");
         var bottomView = View.findDrawableById("BottomLabel");
 
-        timeView.setText(timeString);
-        // hoursView.setText(hours + "");
-        // minutesView.setText(minutes);
+        // timeView.setText(timeString);
         dateView.setText(dateString.toLower());
-        periodView.setText(period);
         notificationView.setText(ncs);
         batteryView.setText(batteryString);
-
         topView.setText(topStatString);
         bottomView.setText(bottomStatString);
+        drawTime(dc, settings, app, now);
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
@@ -161,9 +159,52 @@ class RockFaceView extends WatchUi.WatchFace {
             batteryIcon.setBitmap(batteryDrawable);
         }
         batteryIcon.draw(dc);
-        // Draw optional icons
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
+        }
+    }
+
+    function onPartialUpdate(dc) {
+        var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+        var app = Application.getApp();
+        dc.setClip(colonX, colonY, 8, 60);
+        drawColon(dc, app.getProperty("BlinkingColon"), now);
+    }
+
+    function drawTime(dc, settings, app, now) {
+        var period = "";
+        var hours = now.hour;
+        var minutes = now.min.format("%02d");
+        if (!settings.is24Hour) {
+            if(hours < 12) {
+                period = "am";
+            } else {
+                period = "pm";
+            }
+            if (hours > 12) {
+                hours = hours - 12;
+            }
+        } else {
+            if (app.getProperty("UseMilitaryFormat")) {
+                hours = hours.format("%02d");
+            }
+        }
+        var hoursView = View.findDrawableById("HoursLabel");
+        var minutesView = View.findDrawableById("MinutesLabel");
+        var periodView = View.findDrawableById("PeriodLabel");
+        hoursView.setText(hours + "");
+        minutesView.setText(minutes);
+        periodView.setText(period);
+        drawColon(dc, app.getProperty("BlinkingColon"), now);
+    }
+
+    function drawColon(dc, blinking, now) {
+        if(!blinking || now.sec % 2 == 0) {
+            colonIcon.draw(dc);
+        } else {
+            dc.setColor(bgColour, bgColour);
+            dc.fillRectangle(colonX, colonY, 8, 60);
+            dc.setColor(fgColour, bgColour);
         }
     }
 
@@ -196,12 +237,12 @@ class RockFaceView extends WatchUi.WatchFace {
                 break;
             case 5:
                 if(activity.activeMinutesDay != null) {
-                    return Lang.format(barFormatList[index], [activity.activeMinutesDay]);
+                    return Lang.format(barFormatList[index], [activity.activeMinutesDay.total]);
                 }
                 break;
             case 6:
                 if(activity.activeMinutesWeek != null) {
-                    return Lang.format(barFormatList[index], [activity.activeMinutesWeek]);
+                    return Lang.format(barFormatList[index], [activity.activeMinutesWeek.total]);
                 }
                 break;
             case 7:
@@ -215,18 +256,9 @@ class RockFaceView extends WatchUi.WatchFace {
                 }
                 break;
             case 9:
-                var hrIterator = activity.getHeartRateHistory(5, true);
-                var total = 0;
-                var count = 0;
-                for(var i = 0; i < 5; i++) {
-                    var sample = hrIterator.next();
-                    if(sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
-                        total += sample.heartRate;
-                        count += 1;
-                    }
-                }
-                if(count > 0) {
-                    return Lang.format(barFormatList[index], [Math.floor(total / count).format("%d")]);
+                var sample = activity.getHeartRateHistory(1, true).next();
+                if(sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
+                    return Lang.format(barFormatList[index], [Math.floor(sample.heartRate).format("%d")]);
                 }
                 break;
         }

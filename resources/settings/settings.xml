@@ -20,32 +20,35 @@
 
 	<setting propertyKey="@Properties.TopBarStat" title="@Strings.TopStat">
         <settingConfig type="list">
-            <listEntry value="9">@Strings.HeartRate</listEntry>
-            <listEntry value="2">@Strings.Steps</listEntry>
-            <listEntry value="7">@Strings.FloorsClimbed</listEntry>
-            <listEntry value="3">@Strings.DistanceMeters</listEntry>
-            <listEntry value="0">@Strings.Calories</listEntry>
-            <listEntry value="8">@Strings.MovementBar</listEntry>
             <listEntry value="5">@Strings.ActivityMinDay</listEntry>
             <listEntry value="6">@Strings.ActivityMinWeek</listEntry>
+            <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
+            <listEntry value="3">@Strings.DistanceMeters</listEntry>
+            <listEntry value="7">@Strings.FloorsClimbed</listEntry>
+            <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
+            <listEntry value="8">@Strings.MovementBar</listEntry>
+            <listEntry value="2">@Strings.Steps</listEntry>
         </settingConfig>
     </setting>
 
     <setting propertyKey="@Properties.BottomBarStat" title="@Strings.BottomStat">
         <settingConfig type="list">
-            <listEntry value="9">@Strings.HeartRate</listEntry>
-            <listEntry value="2">@Strings.Steps</listEntry>
-            <listEntry value="7">@Strings.FloorsClimbed</listEntry>
-            <listEntry value="3">@Strings.DistanceMeters</listEntry>
-            <listEntry value="0">@Strings.Calories</listEntry>
-            <listEntry value="8">@Strings.MovementBar</listEntry>
             <listEntry value="5">@Strings.ActivityMinDay</listEntry>
             <listEntry value="6">@Strings.ActivityMinWeek</listEntry>
+            <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
+            <listEntry value="3">@Strings.DistanceMeters</listEntry>
+            <listEntry value="7">@Strings.FloorsClimbed</listEntry>
+            <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
+            <listEntry value="8">@Strings.MovementBar</listEntry>
+            <listEntry value="2">@Strings.Steps</listEntry>
         </settingConfig>
     </setting>
 
+	<setting propertyKey="@Properties.BlinkingColon" title="@Strings.BlinkColon">
+        <settingConfig type="boolean" />
+    </setting>
 </settings>

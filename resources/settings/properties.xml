@@ -20,5 +20,6 @@
 
 	<property id="TopBarStat" type="number">0</property>
     <property id="BottomBarStat" type="number">2</property>
+    <property id="BlinkingColon" type="boolean">true</property>
 
 </properties>
