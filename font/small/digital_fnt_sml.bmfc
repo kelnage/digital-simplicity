@@ -5,7 +5,7 @@ fileVersion=1
 fontName=Consolas
 fontFile=
 charSet=0
-fontSize=18
+fontSize=-18
 aa=1
 scaleH=100
 useSmoothing=1
@@ -50,20 +50,20 @@ invB=0
 outlineThickness=0
 
 # selected chars
-chars=32,48-57,97,100-102,104-105,109-112,114-117,119
+chars=32,37,48-57,97,100-102,104-105,109-112,114-117,119
 
 # imported icon images
-icon="zero.png",48,0,0,0
-icon="one.png",49,0,0,0
-icon="two.png",50,0,0,0
-icon="three.png",51,0,0,0
-icon="four.png",52,0,0,0
-icon="five.png",53,0,0,0
-icon="six.png",54,0,0,0
-icon="seven.png",55,0,0,0
-icon="eight.png",56,0,0,0
-icon="nine.png",57,0,0,0
 icon="space.png",32,0,0,0
+icon="0.png",48,0,0,0
+icon="1.png",49,0,0,0
+icon="2.png",50,0,0,0
+icon="3.png",51,0,0,0
+icon="4.png",52,0,0,0
+icon="5.png",53,0,0,0
+icon="6.png",54,0,0,0
+icon="7.png",55,0,0,0
+icon="8.png",56,0,0,0
+icon="9.png",57,0,0,0
 icon="a.png",97,0,0,0
 icon="d.png",100,0,0,0
 icon="e.png",101,0,0,0
@@ -79,3 +79,4 @@ icon="s.png",115,0,0,0
 icon="t.png",116,0,0,0
 icon="u.png",117,0,0,0
 icon="w.png",119,0,0,0
+icon="percent.png",37,0,0,0
