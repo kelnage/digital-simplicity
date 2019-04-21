@@ -18,7 +18,7 @@
  -->
 <layout id="WatchFace">
 	<drawable class="Background" />
-	<label id="TopLabel" x="120" y="5" font="Graphics.FONT_TINY"
+	<label id="TopLabel" x="120" y="8" font="Graphics.FONT_TINY"
 		justification="Graphics.TEXT_JUSTIFY_CENTER"
 		color="Graphics.COLOR_LT_GRAY" />
 
@@ -53,7 +53,7 @@
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" /> -->
 
-	<label id="BottomLabel" x="120" y="205" font="Graphics.FONT_TINY"
+	<label id="BottomLabel" x="120" y="202" font="Graphics.FONT_TINY"
 		justification="Graphics.TEXT_JUSTIFY_CENTER"
 		color="Graphics.COLOR_LT_GRAY" />
 </layout>

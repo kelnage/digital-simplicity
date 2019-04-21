@@ -168,29 +168,52 @@ class RockFaceView extends WatchUi.WatchFace {
     }
 
     function getStatString(index, activity) {
-        return Lang.format(barFormatList[index], getStat(index, activity));
-    }
-
-    function getStat(index, activity) {
         switch(index) {
             case 0:
-                return [activity.calories];
+                if(activity.calories != null) {
+                    return Lang.format(barFormatList[index], [activity.calories]);
+                }
+                break;
             case 1:
-                return [Math.floor(activity.calories * 4.184).format("%d")];
+                if(activity.calories != null) {
+                    return Lang.format(barFormatList[index], [Math.floor(activity.calories * 4.184).format("%d")]);
+                }
+                break;
             case 2:
-                return [activity.steps];
+                if(activity.steps != null) {
+                    return Lang.format(barFormatList[index], [activity.steps]);
+                }
+                break;
             case 3:
-                return [Math.floor(activity.distance / 100).format("%d")];
+                if(activity.distance != null) {
+                    return Lang.format(barFormatList[index], [Math.floor(activity.distance / 100).format("%d")]);
+                }
+                break;
             case 4:
-                return [Math.floor(activity.distance / 30.48).format("%d")];
+                if(activity.distance != null) {
+                    return Lang.format(barFormatList[index], [Math.floor(activity.distance / 30.48).format("%d")]);
+                }
+                break;
             case 5:
-                return [activity.activeMinutesDay];
+                if(activity.activeMinutesDay != null) {
+                    return Lang.format(barFormatList[index], [activity.activeMinutesDay]);
+                }
+                break;
             case 6:
-                return [activity.activeMinutesWeek];
+                if(activity.activeMinutesWeek != null) {
+                    return Lang.format(barFormatList[index], [activity.activeMinutesWeek]);
+                }
+                break;
             case 7:
-                return [activity.floorsClimbed];
+                if(activity.floorsClimbed != null) {
+                    return Lang.format(barFormatList[index], [activity.floorsClimbed]);
+                }
+                break;
             case 8:
-                return [moveStringsList[activity.moveBarLevel]];
+                if(activity.moveBarLevel != null) {
+                    return Lang.format(barFormatList[index], [moveStringsList[activity.moveBarLevel]]);
+                }
+                break;
             case 9:
                 var hrIterator = activity.getHeartRateHistory(5, true);
                 var total = 0;
@@ -203,11 +226,11 @@ class RockFaceView extends WatchUi.WatchFace {
                     }
                 }
                 if(count > 0) {
-                    return [Math.floor(total / count)];
+                    return Lang.format(barFormatList[index], [Math.floor(total / count).format("%d")]);
                 }
-                return [""];
+                break;
         }
-        return null;
+        return "";
     }
 
     // Designed to use slightly less battery as available power decreases
