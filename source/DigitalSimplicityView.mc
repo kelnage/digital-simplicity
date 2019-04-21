@@ -28,7 +28,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     // icons
     var bluetoothIcon;
     var batteryIcon;
-    var colonIcon;
     var batteryDrawable = Rez.Drawables.BatteryFullIcon;
 
     // layout constants
@@ -80,11 +79,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             :locX=>bluetoothX,
             :locY=>bluetoothY
         });
-        colonIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.Colon,
-            :locX=>colonX,
-            :locY=>colonY
-        });
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
@@ -134,8 +128,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var bottomStatString = getStatString(app.getProperty("BottomBarStat"), activity);
 
         // Update the views
-        // var timeView = View.findDrawableById("TimeLabel");
-
         var dateView = View.findDrawableById("DateLabel");
         var notificationView = View.findDrawableById("NotificationCountLabel");
         var batteryView = View.findDrawableById("BatteryLabel");
@@ -200,7 +192,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
 
     function drawColon(dc, blinking, now) {
         if(!blinking || now.sec % 2 == 0) {
-            colonIcon.draw(dc);
+            dc.setColor(fgColour, bgColour);
+            dc.fillRectangle(colonX, colonY + 17, 8, 8);
+            dc.fillRectangle(colonX, colonY + 35, 8, 8);
         } else {
             dc.setColor(bgColour, bgColour);
             dc.fillRectangle(colonX, colonY, 8, 60);
