@@ -19,6 +19,7 @@
 <drawables>
 	<bitmap id="LauncherIcon" filename="launcher_icon.png" />
 	<bitmap id="BluetoothIcon" filename="bt_simple.png" />
+	<bitmap id="BluetoothIconBold" filename="bt_simple_bold.png" />
 	<bitmap id="BatteryFullIcon" filename="battery_full.png" />
 	<bitmap id="BatteryThreeQuartersIcon" filename="battery_three_quarters.png" />
 	<bitmap id="BatteryHalfIcon" filename="battery_half.png" />

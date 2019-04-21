@@ -35,11 +35,11 @@ class RockFaceView extends WatchUi.WatchFace {
     const fgColour = Graphics.COLOR_BLACK;
     const bgColour = Graphics.COLOR_LT_GRAY;
     const batteryX = 178;
-    const batteryY = 58;
+    const batteryY = 59;
     const bluetoothX = 38;
-    const bluetoothY = 59;
+    const bluetoothY = 57;
     const colonX = 130;
-    const colonY = 120;
+    const colonY = 123;
 
     // layout variables
     var topFormat;
@@ -76,7 +76,7 @@ class RockFaceView extends WatchUi.WatchFace {
             :locY=>batteryY
         });
         bluetoothIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BluetoothIcon,
+            :rezId=>Rez.Drawables.BluetoothIconBold,
             :locX=>bluetoothX,
             :locY=>bluetoothY
         });
