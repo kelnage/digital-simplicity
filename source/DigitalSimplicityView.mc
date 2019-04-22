@@ -24,6 +24,8 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 using Toybox.ActivityMonitor;
 
+var partialUpdates = false;
+
 class DigitalSimplicityView extends WatchUi.WatchFace {
     // icons
     var bluetoothIcon;
@@ -48,9 +50,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
 
     function initialize() {
         WatchFace.initialize();
+        partialUpdates = (Toybox.WatchUi.WatchFace has :onPartialUpdate);
     }
 
-    // Load your resources here
     function onLayout(dc) {
         barFormatList = [WatchUi.loadResource(Rez.Strings.CaloriesFormat),
             WatchUi.loadResource(Rez.Strings.KilojoulesFormat),
@@ -81,7 +83,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
-    // Update the view
     function onUpdate(dc) {
         dc.clearClip();
         dc.setColor(fgColour, bgColour);
@@ -143,13 +144,14 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
         }
+        onPartialUpdate(dc);
     }
 
     function onPartialUpdate(dc) {
-        var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+        var now = System.getClockTime();
         var app = Application.getApp();
         dc.setClip(colonX, colonY, 8, 60);
-        drawColon(dc, app.getProperty("BlinkingColon"), now);
+        drawColon(dc, app.getProperty("BlinkingColon"), now.sec);
     }
 
     function drawTime(dc, settings, app, now) {
@@ -176,11 +178,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         hoursView.setText(hours + "");
         minutesView.setText(minutes);
         periodView.setText(period);
-        drawColon(dc, app.getProperty("BlinkingColon"), now);
     }
 
-    function drawColon(dc, blinking, now) {
-        if(!blinking || now.sec % 2 == 0) {
+    function drawColon(dc, blinking, seconds) {
+        if(!blinking || !partialUpdates || seconds % 2 == 0) {
+            dc.setColor(fgColour, bgColour);
             dc.fillRectangle(colonX, colonY + 17, 8, 8);
             dc.fillRectangle(colonX, colonY + 35, 8, 8);
         } else {
@@ -191,6 +193,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     function drawBatteryStatus(dc, battery) {
+        dc.setColor(fgColour, bgColour);
         dc.fillRectangle(batteryX + 4, batteryY + 4, Math.floor(22 * (battery / 100)), 10);
     }
 
@@ -251,28 +254,30 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         return "";
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
     function onShow() {
         // TODO
     }
 
-    // Called when this View is removed from the screen. Save the
-    // state of this View here. This includes freeing resources from
-    // memory.
     function onHide() {
         // TODO
     }
 
-    // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() {
         // TODO
     }
 
-    // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() {
         // TODO
     }
 
+}
+
+class DigitalSimplicityDelegate extends WatchUi.WatchFaceDelegate {
+    function initialize() {
+        WatchFaceDelegate.initialize();
+    }
+
+    function onPowerBudgetExceeded(powerInfo) {
+        partialUpdates = false;
+    }
 }
