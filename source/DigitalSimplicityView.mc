@@ -28,7 +28,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     // icons
     var bluetoothIcon;
     var batteryIcon;
-    var batteryDrawable = Rez.Drawables.BatteryFullIcon;
 
     // layout constants
     const fgColour = Graphics.COLOR_BLACK;
@@ -70,7 +69,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             WatchUi.loadResource(Rez.Strings.MovementBarFour),
             WatchUi.loadResource(Rez.Strings.MovementBarFive)];
         batteryIcon = new WatchUi.Bitmap({
-            :rezId=>batteryDrawable,
+            :rezId=>Rez.Drawables.BatteryTemplateIcon,
             :locX=>batteryX,
             :locY=>batteryY
         });
@@ -82,16 +81,10 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
-    function onShow() {
-        // TODO
-    }
-
     // Update the view
     function onUpdate(dc) {
         dc.clearClip();
+        dc.setColor(fgColour, bgColour);
 
         // Get data
         var now = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
@@ -145,12 +138,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
 
-        var nextBatteryDrawable = checkBattery(stats.battery);
-        if(nextBatteryDrawable != batteryDrawable) {
-            batteryDrawable = nextBatteryDrawable;
-            batteryIcon.setBitmap(batteryDrawable);
-        }
         batteryIcon.draw(dc);
+        drawBatteryStatus(dc, stats.battery);
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
         }
@@ -192,7 +181,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
 
     function drawColon(dc, blinking, now) {
         if(!blinking || now.sec % 2 == 0) {
-            dc.setColor(fgColour, bgColour);
             dc.fillRectangle(colonX, colonY + 17, 8, 8);
             dc.fillRectangle(colonX, colonY + 35, 8, 8);
         } else {
@@ -200,6 +188,10 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             dc.fillRectangle(colonX, colonY, 8, 60);
             dc.setColor(fgColour, bgColour);
         }
+    }
+
+    function drawBatteryStatus(dc, battery) {
+        dc.fillRectangle(batteryX + 4, batteryY + 4, Math.floor(22 * (battery / 100)), 10);
     }
 
     function getStatString(index, activity) {
@@ -259,18 +251,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         return "";
     }
 
-    // Designed to use slightly less battery as available power decreases
-    function checkBattery(batteryLevel) {
-        if(batteryLevel < 10) {
-            return Rez.Drawables.BatteryLowIcon;
-        } else if(batteryLevel < 33) {
-            return Rez.Drawables.BatteryOneQuarterIcon;
-        } else if(batteryLevel < 66) {
-            return Rez.Drawables.BatteryHalfIcon;
-        } else if(batteryLevel < 90) {
-            return Rez.Drawables.BatteryThreeQuartersIcon;
-        }
-        return Rez.Drawables.BatteryFullIcon;
+    // Called when this View is brought to the foreground. Restore
+    // the state of this View and prepare it to be shown. This includes
+    // loading resources into memory.
+    function onShow() {
+        // TODO
     }
 
     // Called when this View is removed from the screen. Save the
