@@ -29,6 +29,7 @@
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
             <listEntry value="8">@Strings.MovementBar</listEntry>
+            <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
         </settingConfig>
     </setting>
@@ -44,6 +45,7 @@
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
             <listEntry value="8">@Strings.MovementBar</listEntry>
+            <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
         </settingConfig>
     </setting>

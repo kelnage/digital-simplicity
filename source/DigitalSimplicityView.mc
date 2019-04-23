@@ -22,11 +22,18 @@ using Toybox.Lang;
 using Toybox.Application;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
+using Toybox.Timer;
 using Toybox.ActivityMonitor;
+using Toybox.Position;
 
 var partialUpdates = false;
+var locationInfo = null;
 
 class DigitalSimplicityView extends WatchUi.WatchFace {
+    // state
+    var positionTimer;
+    var sunEvent;
+
     // icons
     var bluetoothIcon;
     var batteryIcon;
@@ -44,13 +51,13 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     // layout variables
     var topFormat;
     var bottomFormat;
-
     var barFormatList;
     var moveStringsList;
 
     function initialize() {
         WatchFace.initialize();
         partialUpdates = (Toybox.WatchUi.WatchFace has :onPartialUpdate);
+        positionTimer = new Timer.Timer();
     }
 
     function onLayout(dc) {
@@ -63,7 +70,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             WatchUi.loadResource(Rez.Strings.ActivityMinFormat),
             WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat),
             WatchUi.loadResource(Rez.Strings.MovementBarFormat),
-            WatchUi.loadResource(Rez.Strings.HeartRateFormat)];
+            WatchUi.loadResource(Rez.Strings.HeartRateFormat),
+            WatchUi.loadResource(Rez.Strings.SunEventFormat)];
         moveStringsList = ["",
             WatchUi.loadResource(Rez.Strings.MovementBarOne),
             WatchUi.loadResource(Rez.Strings.MovementBarTwo),
@@ -103,8 +111,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         // Format date and time appropriately
         var dateString = Lang.format(dateFormat, [now.day_of_week, now.day]);
 
-        // var timeString = Lang.format(timeFormat, [hours, minutes]);
-
         // Format notification count
         var nc = settings.notificationCount;
         var ncs = "";
@@ -128,7 +134,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var topView = View.findDrawableById("TopLabel");
         var bottomView = View.findDrawableById("BottomLabel");
 
-        // timeView.setText(timeString);
         dateView.setText(dateString.toLower());
         notificationView.setText(ncs);
         batteryView.setText(batteryString);
@@ -201,61 +206,103 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         switch(index) {
             case 0:
                 if(activity.calories != null) {
-                    return Lang.format(barFormatList[index], [activity.calories]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [activity.calories]);
                 }
                 break;
             case 1:
                 if(activity.calories != null) {
-                    return Lang.format(barFormatList[index], [Math.floor(activity.calories * 4.184).format("%d")]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [Math.floor(activity.calories * 4.184).format("%d")]);
                 }
                 break;
             case 2:
                 if(activity.steps != null) {
-                    return Lang.format(barFormatList[index], [activity.steps]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [activity.steps]);
                 }
                 break;
             case 3:
                 if(activity.distance != null) {
-                    return Lang.format(barFormatList[index], [Math.floor(activity.distance / 100).format("%d")]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [Math.floor(activity.distance / 100).format("%d")]);
                 }
                 break;
             case 4:
                 if(activity.distance != null) {
-                    return Lang.format(barFormatList[index], [Math.floor(activity.distance / 30.48).format("%d")]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [Math.floor(activity.distance / 30.48).format("%d")]);
                 }
                 break;
             case 5:
                 if(activity.activeMinutesDay != null) {
-                    return Lang.format(barFormatList[index], [activity.activeMinutesDay.total]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [activity.activeMinutesDay.total]);
                 }
                 break;
             case 6:
                 if(activity.activeMinutesWeek != null) {
-                    return Lang.format(barFormatList[index], [activity.activeMinutesWeek.total]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [activity.activeMinutesWeek.total]);
                 }
                 break;
             case 7:
                 if(activity.floorsClimbed != null) {
-                    return Lang.format(barFormatList[index], [activity.floorsClimbed]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [activity.floorsClimbed]);
                 }
                 break;
             case 8:
                 if(activity.moveBarLevel != null) {
-                    return Lang.format(barFormatList[index], [moveStringsList[activity.moveBarLevel]]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [moveStringsList[activity.moveBarLevel]]);
                 }
                 break;
             case 9:
                 var sample = activity.getHeartRateHistory(1, true).next();
                 if(sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
-                    return Lang.format(barFormatList[index], [Math.floor(sample.heartRate).format("%d")]);
+                    return Lang.format(
+                        barFormatList[index],
+                        [Math.floor(sample.heartRate).format("%d")]);
+                }
+                break;
+            case 10:
+                if(sunEvent != null) {
+                    return Lang.format(
+                        barFormatList[index],
+                        [
+                            sunEvent.eventTimeInfo.hour.format("%02d"),
+                            sunEvent.eventTimeInfo.min.format("%02d")
+                        ]);
                 }
                 break;
         }
         return "";
     }
 
+    function updatePosition() {
+        // System.println("Fly my pretties");
+        locationInfo = Position.getInfo();
+        if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+            var now = Time.now();
+            if(sunEvent == null || now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -86400) {
+                // Using Time.today() on purpose
+                sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false);
+            }
+        }
+    }
+
     function onShow() {
-        // TODO
+        updatePosition();
     }
 
     function onHide() {
@@ -263,13 +310,12 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     function onExitSleep() {
-        // TODO
+        positionTimer.start(method(:updatePosition), 5000, true); // A five-second timer (that doesn't do much, normally)
     }
 
     function onEnterSleep() {
-        // TODO
+        positionTimer.stop();
     }
-
 }
 
 class DigitalSimplicityDelegate extends WatchUi.WatchFaceDelegate {

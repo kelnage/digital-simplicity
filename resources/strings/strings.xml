@@ -48,5 +48,7 @@
 	<string id="MovementBarFive">Dance!</string>
 	<string id="HeartRate">Heart rate</string>
 	<string id="HeartRateFormat">$1$ BPM</string>
+	<string id="SunEvent">Next sun event</string>
+	<string id="SunEventFormat">$1$:$2$</string>
 
 </strings>
