@@ -30,7 +30,7 @@ class SunData {
         if(a < 0) {
             v = -1 * v;
         }
-        while(v > n) {
+        while(v >= n) {
             v = v - n;
         }
         if(a < 0) {
