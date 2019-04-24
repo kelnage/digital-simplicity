@@ -6,6 +6,7 @@ A simple, yet useful, watchface for round Garmin devices. Only currently support
 
 Digital Simplicity should work on any of the following devices (sorry Fenix 5S owners - its screen resolution is 218x218px!):
 
+- Approach S60
 - D2 Charlie
 - D2 Delta
 - D2 Delta PX
