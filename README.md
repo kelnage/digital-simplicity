@@ -4,9 +4,8 @@ A simple, yet useful, watchface for round Garmin devices. Only currently support
 
 ## Device support
 
-Digital Simplicity should work on any of the following devices (sorry Fenix 5S owners - its screen resolution is 215x215px!):
+Digital Simplicity should work on any of the following devices (sorry Fenix 5S owners - its screen resolution is 218x218px!):
 
-- Approach S60
 - D2 Charlie
 - D2 Delta
 - D2 Delta PX
@@ -30,6 +29,7 @@ Digital Simplicity should work on any of the following devices (sorry Fenix 5S o
 - [X] Increase clock size
 - [X] Add a (blinking?) colon between hours and minutes
 - [X] Make notification count bold?
-- [ ] Performance improvements
+- [X] Add sunrise/sunset option for top and bottom labels
+- [ ] Performance improvements?
 - [ ] Internationalisation?
 - [ ] Release to CIQ
