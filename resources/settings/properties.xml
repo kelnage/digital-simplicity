@@ -21,5 +21,6 @@
 	<property id="TopBarStat" type="number">0</property>
     <property id="BottomBarStat" type="number">2</property>
     <property id="BlinkingColon" type="boolean">true</property>
+    <property id="DisplayMoveBar" type="boolean">false</property>
 
 </properties>

@@ -22,13 +22,13 @@
         <settingConfig type="list">
             <listEntry value="5">@Strings.ActivityMinDay</listEntry>
             <listEntry value="6">@Strings.ActivityMinWeek</listEntry>
+            <listEntry value="8">@Strings.Nothing</listEntry>
             <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
             <listEntry value="3">@Strings.DistanceMeters</listEntry>
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
-            <listEntry value="8">@Strings.MovementBar</listEntry>
             <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
         </settingConfig>
@@ -38,19 +38,23 @@
         <settingConfig type="list">
             <listEntry value="5">@Strings.ActivityMinDay</listEntry>
             <listEntry value="6">@Strings.ActivityMinWeek</listEntry>
+            <listEntry value="8">@Strings.Nothing</listEntry>
             <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
             <listEntry value="3">@Strings.DistanceMeters</listEntry>
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
-            <listEntry value="8">@Strings.MovementBar</listEntry>
             <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
         </settingConfig>
     </setting>
 
 	<setting propertyKey="@Properties.BlinkingColon" title="@Strings.BlinkColon">
+        <settingConfig type="boolean" />
+    </setting>
+
+    <setting propertyKey="@Properties.DisplayMoveBar" title="@Strings.MoveBar">
         <settingConfig type="boolean" />
     </setting>
 </settings>

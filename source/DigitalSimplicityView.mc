@@ -30,8 +30,21 @@ var partialUpdates = false;
 var locationInfo = null;
 
 class DigitalSimplicityView extends WatchUi.WatchFace {
+    enum {
+        BAR_OPTION_CALORIES,
+        BAR_OPTION_KILOJOULES,
+        BAR_OPTION_STEPS,
+        BAR_OPTION_DISTANCE_METRES,
+        BAR_OPTION_DISTANCE_FEET,
+        BAR_OPTION_ACTIVITY_MIN_DAY,
+        BAR_OPTION_ACTIVITY_MIN_WEEK,
+        BAR_OPTION_FLOORS_ASCENDED,
+        BAR_OPTION_NOTHING,
+        BAR_OPTION_HEART_RATE,
+        BAR_OPTION_SUN_EVENT
+    }
+
     // state
-    var positionTimer;
     var sunEvent;
 
     // icons
@@ -52,12 +65,10 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     var topFormat;
     var bottomFormat;
     var barFormatList;
-    var moveStringsList;
 
     function initialize() {
         WatchFace.initialize();
         partialUpdates = (Toybox.WatchUi.WatchFace has :onPartialUpdate);
-        positionTimer = new Timer.Timer();
     }
 
     function onLayout(dc) {
@@ -69,15 +80,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             WatchUi.loadResource(Rez.Strings.ActivityMinFormat),
             WatchUi.loadResource(Rez.Strings.ActivityMinFormat),
             WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat),
-            WatchUi.loadResource(Rez.Strings.MovementBarFormat),
+            "",
             WatchUi.loadResource(Rez.Strings.HeartRateFormat),
             WatchUi.loadResource(Rez.Strings.SunEventFormat)];
-        moveStringsList = ["",
-            WatchUi.loadResource(Rez.Strings.MovementBarOne),
-            WatchUi.loadResource(Rez.Strings.MovementBarTwo),
-            WatchUi.loadResource(Rez.Strings.MovementBarThree),
-            WatchUi.loadResource(Rez.Strings.MovementBarFour),
-            WatchUi.loadResource(Rez.Strings.MovementBarFive)];
         batteryIcon = new WatchUi.Bitmap({
             :rezId=>Rez.Drawables.BatteryTemplateIcon,
             :locX=>batteryX,
@@ -146,6 +151,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
 
         batteryIcon.draw(dc);
         drawBatteryStatus(dc, stats.battery);
+        if(app.getProperty("DisplayMoveBar")) {
+            drawMoveBar(dc, activity.moveBarLevel);
+        }
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
         }
@@ -202,72 +210,72 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         dc.fillRectangle(batteryX + 4, batteryY + 4, Math.floor(22 * (battery / 100)), 10);
     }
 
+    function drawMoveBar(dc, moveNumber) {
+        dc.setColor(Graphics.COLOR_DK_RED, bgColour);
+        dc.fillRectangle(33, 194, moveNumber * 35, 3);
+    }
+
     function getStatString(index, activity) {
         switch(index) {
-            case 0:
+            case BAR_OPTION_CALORIES:
                 if(activity.calories != null) {
                     return Lang.format(
                         barFormatList[index],
                         [activity.calories]);
                 }
                 break;
-            case 1:
+            case BAR_OPTION_KILOJOULES:
                 if(activity.calories != null) {
                     return Lang.format(
                         barFormatList[index],
                         [Math.floor(activity.calories * 4.184).format("%d")]);
                 }
                 break;
-            case 2:
+            case BAR_OPTION_STEPS:
                 if(activity.steps != null) {
                     return Lang.format(
                         barFormatList[index],
                         [activity.steps]);
                 }
                 break;
-            case 3:
+            case BAR_OPTION_DISTANCE_METRES:
                 if(activity.distance != null) {
                     return Lang.format(
                         barFormatList[index],
                         [Math.floor(activity.distance / 100).format("%d")]);
                 }
                 break;
-            case 4:
+            case BAR_OPTION_DISTANCE_FEET:
                 if(activity.distance != null) {
                     return Lang.format(
                         barFormatList[index],
                         [Math.floor(activity.distance / 30.48).format("%d")]);
                 }
                 break;
-            case 5:
+            case BAR_OPTION_ACTIVITY_MIN_DAY:
                 if(activity.activeMinutesDay != null) {
                     return Lang.format(
                         barFormatList[index],
                         [activity.activeMinutesDay.total]);
                 }
                 break;
-            case 6:
+            case BAR_OPTION_ACTIVITY_MIN_WEEK:
                 if(activity.activeMinutesWeek != null) {
                     return Lang.format(
                         barFormatList[index],
                         [activity.activeMinutesWeek.total]);
                 }
                 break;
-            case 7:
+            case BAR_OPTION_FLOORS_ASCENDED:
                 if(activity.floorsClimbed != null) {
                     return Lang.format(
                         barFormatList[index],
                         [activity.floorsClimbed]);
                 }
                 break;
-            case 8:
-                if(activity.moveBarLevel != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [moveStringsList[activity.moveBarLevel]]);
-                }
+            case BAR_OPTION_NOTHING:
                 break;
-            case 9:
+            case BAR_OPTION_HEART_RATE:
                 var sample = activity.getHeartRateHistory(1, true).next();
                 if(sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
                     return Lang.format(
@@ -275,7 +283,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                         [Math.floor(sample.heartRate).format("%d")]);
                 }
                 break;
-            case 10:
+            case BAR_OPTION_SUN_EVENT:
                 if(sunEvent != null) {
                     return Lang.format(
                         barFormatList[index],
@@ -318,6 +326,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     function onEnterSleep() {
+        // TODO
     }
 }
 

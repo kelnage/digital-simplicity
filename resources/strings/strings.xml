@@ -23,6 +23,7 @@
 	<string id="TopStat">Top value</string>
 	<string id="BottomStat">Bottom value</string>
 	<string id="BlinkColon">Blink colon</string>
+	<string id="MoveBar">Display move bar</string>
 
 	<string id="Calories">Calories</string>
 	<string id="CaloriesFormat">$1$ kcal</string>
@@ -39,16 +40,10 @@
 	<string id="ActivityMinWeek">Activity minutes (week)</string>
 	<string id="FloorsClimbed">Floors climbed</string>
 	<string id="FloorsClimbedFormat">$1$ floors</string>
-	<string id="MovementBar">Movement number</string>
-	<string id="MovementBarFormat">$1$</string>
-	<string id="MovementBarOne">Get up!</string>
-	<string id="MovementBarTwo">Get on up!</string>
-	<string id="MovementBarThree">Get up!!</string>
-	<string id="MovementBarFour">Get on up!!</string>
-	<string id="MovementBarFive">Dance!</string>
 	<string id="HeartRate">Heart rate</string>
 	<string id="HeartRateFormat">$1$ BPM</string>
 	<string id="SunEvent">Next sun event</string>
 	<string id="SunEventFormat">$1$:$2$</string>
+	<string id="Nothing">Blank</string>
 
 </strings>
