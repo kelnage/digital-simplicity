@@ -25,6 +25,13 @@ class SunData {
         eventType = etype;
     }
 
+    function toString() {
+        return timeObtained.value() + ";"
+            + locationObtained.position.toDegrees() + ";"
+            + eventTime.value() + ";"
+            + eventType;
+    }
+
     // works with floating point numbers and preserves sign
     static function mod(a, n) {
         var v = a;
@@ -49,11 +56,23 @@ class SunData {
     }
 
     // All math is radians
-    // Using algorithm from Wikipedia: https://en.wikipedia.org/wiki/Sunrise_equation
+    // Adapted from the formulas on Wikipedia: https://en.wikipedia.org/wiki/Sunrise_equation
     // moment is a Time.Moment object, that should represent the moment of midnight on the current day (or tomorrow if nextDay is true)
     // locationInfo is a Position.Info object
     // altitude is in metres
-    static function calculateSunriseSunset(moment, locationInfo, nextDay) {
+    static function calculateSunriseSunset(moment, locationInfo, nextDay, prevData) {
+        // System.println(moment.value() + ";"
+        //     + locationInfo.accuracy + ";" + locationInfo.position.toDegrees() + ";" + locationInfo.altitude + ";"
+        //     + nextDay + ";"
+        //     + prevData);
+        var now = Time.now();
+        // skip calculating sunrise/set data for the current day if:
+        // - we already have previous sunset data AND
+        // - the current time is after the time of that sunset AND
+        // - we would be calculating the data for the same day (are we getting ourselves in trouble assuming every day is 86400 seconds?)
+        if(prevData != null && prevData.eventType == SunData.SUNSET && now.compare(prevData.eventTime) > 0 && now.compare(moment) < 86400) {
+            return calculateSunriseSunset(moment.add(new Time.Duration(Gregorian.SECONDS_PER_DAY)), locationInfo, true, null);
+        }
         // System.println("Updating sunevent data");
         var latlon = locationInfo.position.toRadians();
         var lat = latlon[0];
@@ -88,7 +107,6 @@ class SunData {
         var delta = Math.asin(Math.sin(lambda) * 0.397793d);
         // ANGULAR DISTANCE
         var omega = Math.acos((Math.sin(Math.toRadians(-0.83d + ((-2.076 * Math.sqrt(altitude)) / 60))) - (Math.sin(lat) * Math.sin(delta))) / (Math.cos(lat) * Math.cos(delta)));
-        var now = Time.now();
         var sunrise = new Time.Moment(julianToUnix(Jtransit - (omega / TWOPI)));
         var sunset = new Time.Moment(julianToUnix(Jtransit + (omega / TWOPI)));
         // System.println("Now: " + now.value() + ", Sunrise: " + sunrise.value() + ", Sunset: " + sunset.value());
@@ -98,7 +116,7 @@ class SunData {
         }
         // if we're already past sunset, show the time of sunrise tomorrow
         if(now.compare(sunset) > 0) {
-            return calculateSunriseSunset(moment.add(new Time.Duration(Gregorian.SECONDS_PER_DAY)), locationInfo, true);
+            return calculateSunriseSunset(moment.add(new Time.Duration(Gregorian.SECONDS_PER_DAY)), locationInfo, true, null);
         }
         // otherwise, return sunset time
         return new SunData(now, locationInfo, sunset, SunData.SUNSET);

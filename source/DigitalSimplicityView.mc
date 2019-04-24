@@ -295,9 +295,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             locationInfo = Position.getInfo();
             if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
                 var now = Time.now();
-                if(sunEvent == null || now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) {
+                if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
+                    (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks
+                    ) {
                     // Using Time.today() rather than Time.now()
-                    sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false);
+                    sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
                 }
             }
         }
