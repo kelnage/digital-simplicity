@@ -291,12 +291,14 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
 
     function updatePosition() {
         // System.println("Fly my pretties");
-        locationInfo = Position.getInfo();
-        if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-            var now = Time.now();
-            if(sunEvent == null || now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -86400) {
-                // Using Time.today() on purpose
-                sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false);
+        if(Application.getApp().getProperty("TopBarStat") == 10 || Application.getApp().getProperty("BottomBarStat") == 10) {
+            locationInfo = Position.getInfo();
+            if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                var now = Time.now();
+                if(sunEvent == null || now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) {
+                    // Using Time.today() rather than Time.now()
+                    sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false);
+                }
             }
         }
     }
@@ -310,11 +312,10 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     function onExitSleep() {
-        positionTimer.start(method(:updatePosition), 5000, true); // A five-second timer (that doesn't do much, normally)
+        updatePosition();
     }
 
     function onEnterSleep() {
-        positionTimer.stop();
     }
 }
 
