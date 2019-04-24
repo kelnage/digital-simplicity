@@ -20,9 +20,12 @@ Digital Simplicity should work on any of the following devices (sorry Fenix 5S o
 - Forerunner 645
 - Forerunner 645m
 - Forerunner 935
+- MARQ devices
 - Vivoactive 3
 - Vivoactive 3m
 - Vivoactive 3m LTE
+- Vivolife
+- The upcoming 2019 wearable
 
 ## Things TODO
 
