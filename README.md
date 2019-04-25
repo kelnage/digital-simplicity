@@ -41,3 +41,4 @@ Digital Simplicity should work on any of the following devices (sorry Fenix 5S o
 - [ ] Internationalisation?
 - [ ] Fix icon to include background
 - [ ] Add altitude top/bottom bar option
+- [ ] Improve sunrise/sunset calculation accuracy
