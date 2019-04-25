@@ -316,14 +316,16 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_NOTHING:
                 break;
             case BAR_OPTION_HEART_RATE:
-                if(!(ActivityMonitor.Info has :getHeartRateHistory)) {
-                    return "N/S";
-                }
-                var sample = activity.getHeartRateHistory(1, true).next();
-                if(sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [Math.floor(sample.heartRate).format("%d")]);
+                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getHeartRateHistory)) {
+                    var sampleIterator = Toybox.SensorHistory.getHeartRateHistory({});
+                    if(sampleIterator != null) {
+                        var sample = sampleIterator.next();
+                        if(sample != null && sample.data != null) {
+                            return Lang.format(
+                                barFormatList[index],
+                                [Math.floor(sample.data).format("%d")]);
+                        }
+                    }
                 }
                 break;
             case BAR_OPTION_SUN_EVENT:
