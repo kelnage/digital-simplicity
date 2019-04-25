@@ -29,6 +29,7 @@
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Positioning"/>
+            <iq:uses-permission id="SensorHistory"/>
         </iq:permissions>
         <iq:languages>
             <iq:language>eng</iq:language>

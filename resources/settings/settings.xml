@@ -22,15 +22,20 @@
         <settingConfig type="list">
             <listEntry value="5">@Strings.ActivityMinDay</listEntry>
             <listEntry value="6">@Strings.ActivityMinWeek</listEntry>
+            <listEntry value="15">@Strings.AltitudeFeet</listEntry>
+            <listEntry value="14">@Strings.AltitudeMetres</listEntry>
             <listEntry value="8">@Strings.Nothing</listEntry>
             <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
-            <listEntry value="3">@Strings.DistanceMeters</listEntry>
+            <listEntry value="3">@Strings.DistanceMetres</listEntry>
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
+            <listEntry value="11">@Strings.Pressure</listEntry>
             <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
+            <listEntry value="12">@Strings.TemperatureCelsius</listEntry>
+            <listEntry value="13">@Strings.TemperatureFahrenheit</listEntry>
         </settingConfig>
     </setting>
 
@@ -38,15 +43,20 @@
         <settingConfig type="list">
             <listEntry value="5">@Strings.ActivityMinDay</listEntry>
             <listEntry value="6">@Strings.ActivityMinWeek</listEntry>
+            <listEntry value="15">@Strings.AltitudeFeet</listEntry>
+            <listEntry value="14">@Strings.AltitudeMetres</listEntry>
             <listEntry value="8">@Strings.Nothing</listEntry>
             <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
-            <listEntry value="3">@Strings.DistanceMeters</listEntry>
+            <listEntry value="3">@Strings.DistanceMetres</listEntry>
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
+            <listEntry value="11">@Strings.Pressure</listEntry>
             <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
+            <listEntry value="12">@Strings.TemperatureCelsius</listEntry>
+            <listEntry value="13">@Strings.TemperatureFahrenheit</listEntry>
         </settingConfig>
     </setting>
 
