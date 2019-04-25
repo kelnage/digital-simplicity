@@ -16,9 +16,9 @@
    id="svg4592"
    inkscape:version="0.92.1 r15371"
    sodipodi:docname="hero_logo.svg"
-   inkscape:export-filename="C:\Users\shiny\eclipse-workspace\DigitalSimplicity\design\hero_logo.png"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96">
+   inkscape:export-filename="C:\Users\shiny\eclipse-workspace\DigitalSimplicity\design\hero_logo_github.png"
+   inkscape:export-xdpi="85.330002"
+   inkscape:export-ydpi="85.330002">
   <defs
      id="defs4586" />
   <sodipodi:namedview
@@ -29,15 +29,15 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.58888889"
-     inkscape:cx="579.18889"
+     inkscape:cx="303.24549"
      inkscape:cy="470.79498"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      units="px"
-     inkscape:window-width="2560"
+     inkscape:window-width="1920"
      inkscape:window-height="1017"
-     inkscape:window-x="1912"
+     inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
@@ -54,7 +54,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -63,6 +63,15 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-106.50002)">
+    <rect
+       style="opacity:1;fill:#aaaaaa;fill-opacity:1;stroke:#000000;stroke-width:2.09020814;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5326"
+       width="369.104"
+       height="178.00603"
+       x="5.9478683"
+       y="113.04611"
+       rx="21.166664"
+       ry="21.166664" />
     <g
        style="shape-rendering:crispEdges"
        transform="matrix(12.499999,0,0,12.499999,15.945604,-3516.3452)"
@@ -697,14 +706,5 @@
          d="m 6.1535618,6.02066 -3.3e-6,-1.30308 0.52916,-0.52916 0.52917,0.52916 3.3e-6,1.30308 -0.52917,0.52916 z"
          style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.20665292;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;shape-rendering:crispEdges" />
     </g>
-    <rect
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.09020814;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect5326"
-       width="369.104"
-       height="178.00603"
-       x="5.9478683"
-       y="113.04611"
-       rx="21.166664"
-       ry="21.166664" />
   </g>
 </svg>
