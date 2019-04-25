@@ -16,9 +16,9 @@
    id="svg4592"
    inkscape:version="0.92.1 r15371"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="C:\Users\shiny\eclipse-workspace\DigitalSimplicity\resources\drawables\launcher_icon.png"
-   inkscape:export-xdpi="54.860001"
-   inkscape:export-ydpi="54.860001">
+   inkscape:export-filename="C:\Users\shiny\eclipse-workspace\DigitalSimplicity\design\icon.png"
+   inkscape:export-xdpi="192"
+   inkscape:export-ydpi="192">
   <defs
      id="defs4586" />
   <sodipodi:namedview
@@ -28,17 +28,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.157895"
-     inkscape:cx="11.47417"
-     inkscape:cy="33.384118"
+     inkscape:zoom="3.9449116"
+     inkscape:cx="73.576008"
+     inkscape:cy="32.498113"
      inkscape:document-units="px"
      inkscape:current-layer="layer1-7"
-     showgrid="true"
+     showgrid="false"
      units="px"
-     inkscape:window-width="1920"
+     inkscape:window-width="2560"
      inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="592"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -72,7 +72,7 @@
        id="layer1-7"
        inkscape:label="Layer 1">
       <g
-         transform="translate(1.0736733,-4.1631431)"
+         transform="matrix(0.93854763,0,0,0.95563916,1.6102306,8.6599308)"
          id="layer1-9"
          inkscape:label="Layer 1">
         <path
@@ -120,7 +120,7 @@
            style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.44014096;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       </g>
       <g
-         transform="translate(10.069506,-4.1631205)"
+         transform="matrix(0.93854763,0,0,0.95563916,10.053247,8.6599524)"
          id="layer1-9-2"
          inkscape:label="Layer 1">
         <path
@@ -161,6 +161,15 @@
            id="rect4544-1"
            style="opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.44014096;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       </g>
+      <rect
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.26458326;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5326"
+         width="17.846136"
+         height="17.846134"
+         x="0.88185591"
+         y="275.97635"
+         rx="1.107179"
+         ry="1.1071792" />
     </g>
   </g>
 </svg>
