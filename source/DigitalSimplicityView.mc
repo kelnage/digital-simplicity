@@ -228,92 +228,102 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     function getStatString(index, activity) {
+        // System.println("Entering getStatString");
         switch(index) {
             case BAR_OPTION_CALORIES:
-                if(!(ActivityMonitor.Info has :calories)) {
+                if(ActivityMonitor.Info has :calories) {
+                    if(activity.calories != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [activity.calories]);
+                    }
+                } else {
                     return "N/S";
-                }
-                if(activity.calories != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [activity.calories]);
                 }
                 break;
             case BAR_OPTION_KILOJOULES:
-                if(!(ActivityMonitor.Info has :calories)) {
+                if(ActivityMonitor.Info has :calories) {
+                    if(activity.calories != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [Math.floor(activity.calories * 4.184).format("%d")]);
+                    }
+                } else {
                     return "N/S";
-                }
-                if(activity.calories != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [Math.floor(activity.calories * 4.184).format("%d")]);
                 }
                 break;
             case BAR_OPTION_STEPS:
-                if(!(ActivityMonitor.Info has :steps)) {
-                    return "N/S";
+                if(ActivityMonitor.Info has :steps) {
+                    if(activity.steps != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [activity.steps]);
+                    }
                 }
-                if(activity.steps != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [activity.steps]);
+                else {
+                    return "N/S";
                 }
                 break;
             case BAR_OPTION_DISTANCE_METRES:
-                if(!(ActivityMonitor.Info has :distance)) {
+                if(ActivityMonitor.Info has :distance) {
+                    if(activity.distance != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [Math.floor(activity.distance / 100).format("%d")]);
+                    }
+                } else {
                     return "N/S";
-                }
-                if(activity.distance != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [Math.floor(activity.distance / 100).format("%d")]);
                 }
                 break;
             case BAR_OPTION_DISTANCE_FEET:
-                if(!(ActivityMonitor.Info has :distance)) {
+                if(ActivityMonitor.Info has :distance) {
+                    if(activity.distance != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [Math.floor(activity.distance / 30.48).format("%d")]);
+                    }
+                } else {
                     return "N/S";
-                }
-                if(activity.distance != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [Math.floor(activity.distance / 30.48).format("%d")]);
                 }
                 break;
             case BAR_OPTION_ACTIVITY_MIN_DAY:
-                if(!(ActivityMonitor.Info has :activeMinutesDay)) {
+                if(ActivityMonitor.Info has :activeMinutesDay) {
+                    if(activity.activeMinutesDay != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [activity.activeMinutesDay.total]);
+                    }
+                } else {
                     return "N/S";
-                }
-                if(activity.activeMinutesDay != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [activity.activeMinutesDay.total]);
                 }
                 break;
             case BAR_OPTION_ACTIVITY_MIN_WEEK:
-                if(!(ActivityMonitor.Info has :activeMinutesWeek)) {
+                if(ActivityMonitor.Info has :activeMinutesWeek) {
+                    if(activity.activeMinutesWeek != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [activity.activeMinutesWeek.total]);
+                    }
+                } else {
                     return "N/S";
-                }
-                if(activity.activeMinutesWeek != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [activity.activeMinutesWeek.total]);
                 }
                 break;
             case BAR_OPTION_FLOORS_ASCENDED:
-                if(!(ActivityMonitor.Info has :floorsClimbed)) {
+                if(ActivityMonitor.Info has :floorsClimbed) {
+                    if(activity.floorsClimbed != null) {
+                        return Lang.format(
+                            barFormatList[index],
+                            [activity.floorsClimbed]);
+                    }
+                } else {
                     return "N/S";
-                }
-                if(activity.floorsClimbed != null) {
-                    return Lang.format(
-                        barFormatList[index],
-                        [activity.floorsClimbed]);
                 }
                 break;
             case BAR_OPTION_NOTHING:
                 break;
             case BAR_OPTION_HEART_RATE:
                 if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getHeartRateHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getHeartRateHistory({});
+                    var sampleIterator = Toybox.SensorHistory.getHeartRateHistory({:period => 1});
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
@@ -322,6 +332,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                                 [Math.floor(sample.data).format("%d")]);
                         }
                     }
+                } else {
+                    return "N/S";
                 }
                 break;
             case BAR_OPTION_SUN_EVENT:
@@ -336,7 +348,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                 break;
             case BAR_OPTION_PRESSURE:
                 if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getPressureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getPressureHistory({});
+                    var sampleIterator = Toybox.SensorHistory.getPressureHistory({:period => 1});
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
@@ -345,14 +357,13 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                                 [(sample.data / 100).format("%.1f")]);
                         }
                     }
-                }
-                else {
+                } else {
                     return "N/S";
                 }
                 break;
             case BAR_OPTION_TEMPERATURE_C:
                 if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getTemperatureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({});
+                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({:period => 1});
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
@@ -361,14 +372,13 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                                 [sample.data.format("%.1f")]);
                         }
                     }
-                }
-                else {
+                } else {
                     return "N/S";
                 }
                 break;
             case BAR_OPTION_TEMPERATURE_F:
                 if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getTemperatureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({});
+                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({:period => 1});
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
@@ -377,14 +387,13 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                                 [((sample.data * 1.8) + 32).format("%.1f")]);
                         }
                     }
-                }
-                else {
+                } else {
                     return "N/S";
                 }
                 break;
             case BAR_OPTION_ALTITUDE_METRES:
                 if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getElevationHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({});
+                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({:period => 1});
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
@@ -393,19 +402,17 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                                 [sample.data.format("%d")]);
                         }
                     }
-                }
-                else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
                     return Lang.format(
                         barFormatList[index],
                         [locationInfo.altitude.format("%d")]);
-                }
-                else {
+                } else {
                     return "N/S";
                 }
                 break;
             case BAR_OPTION_ALTITUDE_FEET:
                 if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getElevationHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({});
+                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({:period => 1});
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
@@ -414,35 +421,37 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                                 [(sample.data * 3.281).format("%d")]);
                         }
                     }
-                }
-                else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
                     return Lang.format(
                         barFormatList[index],
                         [(locationInfo.altitude * 3.281).format("%d")]);
-                }
-                else {
+                } else {
                     return "N/S";
                 }
                 break;
         }
+        // System.println("Exiting getStatString without a result");
         return "";
     }
 
     function updatePosition() {
-        // System.println("Fly my pretties");
-        locationInfo = Position.getInfo();
-        if(Application.getApp().getProperty("TopBarStat") == 10 || Application.getApp().getProperty("BottomBarStat") == 10) {
-            if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                var now = Time.now();
-                if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
-                    (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks
-                    // TODO: location based checks?
-                    ) {
-                    // Using Time.today() rather than Time.now()
-                    sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
+        // System.println("Entering updatePosition");
+        if(Position has :getInfo) {
+            locationInfo = Position.getInfo();
+            if(Application.getApp().getProperty("TopBarStat") == 10 || Application.getApp().getProperty("BottomBarStat") == 10) {
+                if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                    var now = Time.now();
+                    if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
+                        (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks
+                        // TODO: location based checks?
+                        ) {
+                        // Using Time.today() rather than Time.now()
+                        sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
+                    }
                 }
             }
         }
+        // System.println("Exiting updatePosition");
     }
 
     function onShow() {

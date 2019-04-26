@@ -20,6 +20,7 @@ using Toybox.Math;
 using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
+using Toybox.Position;
 
 class SunData {
     static const TWOPI = Math.PI * 2.0d;
@@ -95,7 +96,7 @@ class SunData {
         var lat = latlon[0];
         var lon = latlon[1];
         var altitude = 0;
-        if(locationInfo has :altitude && locationInfo.altitude != null && locationInfo.altitude > 0) {
+        if(Position.Info has :altitude && locationInfo.altitude != null && locationInfo.altitude > 0) {
             altitude = locationInfo.altitude;
         }
         // DAYS
