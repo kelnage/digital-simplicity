@@ -227,10 +227,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         dc.fillRectangle(33, 194, moveNumber * 35, 3);
     }
 
-    function needsSensorInfo(option) {
-        return (option == BAR_OPTION_PRESSURE || option == BAR_OPTION_TEMPERATURE_C || option == BAR_OPTION_TEMPERATURE_F || option == BAR_OPTION_ALTITUDE_METRES || option == BAR_OPTION_ALTITUDE_FEET);
-    }
-
     function getStatString(index, activity) {
         switch(index) {
             case BAR_OPTION_CALORIES:
