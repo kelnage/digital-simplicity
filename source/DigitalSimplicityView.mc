@@ -46,7 +46,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         BAR_OPTION_TEMPERATURE_C,
         BAR_OPTION_TEMPERATURE_F,
         BAR_OPTION_ALTITUDE_METRES,
-        BAR_OPTION_ALTITUDE_FEET
+        BAR_OPTION_ALTITUDE_FEET, // 15
+        BAR_OPTION_LATITUDE,
+        BAR_OPTION_LONGITUDE
     }
 
     // state
@@ -93,7 +95,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             WatchUi.loadResource(Rez.Strings.TemperatureCelsiusFormat),
             WatchUi.loadResource(Rez.Strings.TemperatureFahrenheitFormat),
             WatchUi.loadResource(Rez.Strings.MetresFormat),
-            WatchUi.loadResource(Rez.Strings.FeetFormat)
+            WatchUi.loadResource(Rez.Strings.FeetFormat),
+            WatchUi.loadResource(Rez.Strings.LocationFormat),
+            WatchUi.loadResource(Rez.Strings.LocationFormat)
         ];
         batteryIcon = new WatchUi.Bitmap({
             :rezId=>Rez.Drawables.BatteryTemplateIcon,
@@ -429,6 +433,20 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     return "N/S";
                 }
                 break;
+            case BAR_OPTION_LATITUDE:
+            case BAR_OPTION_LONGITUDE:
+                if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                    var positionString = locationInfo.position.toGeoString(Position.GEO_DM);
+                    System.println(locationInfo.position.toGeoString(Position.GEO_DEG));
+                    System.println(locationInfo.position.toGeoString(Position.GEO_DM));
+                    System.println(locationInfo.position.toGeoString(Position.GEO_DMS));
+                    System.println(locationInfo.position.toGeoString(Position.GEO_MGRS));
+                    if(index == BAR_OPTION_LATITUDE) {
+                        return "hello";
+                    } else {
+                        return "world";
+                    }
+                }
         }
         // System.println("Exiting getStatString without a result");
         return "";

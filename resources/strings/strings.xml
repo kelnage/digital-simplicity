@@ -53,5 +53,8 @@
 	<string id="TemperatureFahrenheitFormat">$1$°F</string>
 	<string id="AltitudeMetres">Altitude (metres)</string>
 	<string id="AltitudeFeet">Altitude (feet)</string>
+	<string id="Latitude">Latitude</string>
+	<string id="Longitude">Longitude</string>
+	<string id="LocationFormat">$1$</string>
 
 </strings>

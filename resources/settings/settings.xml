@@ -31,6 +31,8 @@
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
+            <listEntry value="16">@Strings.Latitude</listEntry>
+            <listEntry value="17">@Strings.Longitude</listEntry>
             <listEntry value="11">@Strings.Pressure</listEntry>
             <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
@@ -52,6 +54,8 @@
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
+            <listEntry value="16">@Strings.Latitude</listEntry>
+            <listEntry value="17">@Strings.Longitude</listEntry>
             <listEntry value="11">@Strings.Pressure</listEntry>
             <listEntry value="10">@Strings.SunEvent</listEntry>
             <listEntry value="2">@Strings.Steps</listEntry>
