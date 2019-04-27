@@ -61,9 +61,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     const bgColour = Graphics.COLOR_LT_GRAY;
     const batteryX = 178;
     const batteryY = 59;
-    const bluetoothX = 38;
+    const bluetoothX = 32;
     const bluetoothY = 57;
-    const colonX = 130;
+    const secondsX = 200;
+    const secondsY = 124;
+    const colonX = 118;
     const colonY = 123;
 
     // layout variables
@@ -169,14 +171,17 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
         }
-        onPartialUpdate(dc);
+        // onPartialUpdate(dc);
     }
 
     function onPartialUpdate(dc) {
         var now = System.getClockTime();
         var app = Application.getApp();
+        dc.setClip(secondsX, secondsY, 30, 22);
+        drawSeconds(dc, app.getProperty("ShowSeconds"), now.sec);
         dc.setClip(colonX, colonY, 8, 60);
         drawColon(dc, app.getProperty("BlinkingColon"), now.sec);
+
     }
 
     function drawTime(dc, settings, app, now) {
@@ -199,10 +204,27 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         }
         var hoursView = View.findDrawableById("HoursLabel");
         var minutesView = View.findDrawableById("MinutesLabel");
+        var secondsView = View.findDrawableById("SecondsLabel");
         var periodView = View.findDrawableById("PeriodLabel");
+        if(app.getProperty("ShowSeconds")) {
+            secondsView.setText(now.sec.format("%02d"));
+        } else {
+            secondsView.setText("");
+        }
         hoursView.setText(hours + "");
         minutesView.setText(minutes);
         periodView.setText(period);
+    }
+
+    function drawSeconds(dc, draw, seconds) {
+        if(draw) {
+            dc.setColor(bgColour, bgColour);
+            dc.fillRectangle(secondsX, secondsY, 30, 22);
+            dc.setColor(fgColour, bgColour);
+            var secondsView = View.findDrawableById("SecondsLabel");
+            secondsView.setText(seconds.format("%02d"));
+            secondsView.draw(dc);
+        }
     }
 
     function drawColon(dc, blinking, seconds) {
@@ -478,5 +500,7 @@ class DigitalSimplicityDelegate extends WatchUi.WatchFaceDelegate {
 
     function onPowerBudgetExceeded(powerInfo) {
         partialUpdates = false;
+        System.println("Power exceeded");
+
     }
 }

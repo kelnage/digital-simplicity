@@ -64,6 +64,10 @@
         <settingConfig type="boolean" />
     </setting>
 
+	<setting propertyKey="@Properties.ShowSeconds" title="@Strings.ShowSeconds">
+        <settingConfig type="boolean" />
+    </setting>
+
     <setting propertyKey="@Properties.DisplayMoveBar" title="@Strings.MoveBar">
         <settingConfig type="boolean" />
     </setting>

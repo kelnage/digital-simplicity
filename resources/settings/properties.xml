@@ -21,6 +21,11 @@
 	<property id="TopBarStat" type="number">0</property>
     <property id="BottomBarStat" type="number">2</property>
     <property id="BlinkingColon" type="boolean">true</property>
+    <property id="ShowSeconds" type="boolean">true</property>
     <property id="DisplayMoveBar" type="boolean">false</property>
+    <property id="PeriodY" type="number">56</property>
+    <property id="HourX" type="number">96</property>
+    <property id="ColonX" type="number">98</property>
+    <property id="MinuteX" type="number">178</property>
 
 </properties>

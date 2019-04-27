@@ -23,6 +23,7 @@
 	<string id="TopStat">Top value</string>
 	<string id="BottomStat">Bottom value</string>
 	<string id="BlinkColon">Blink colon</string>
+	<string id="ShowSeconds">Show seconds</string>
 	<string id="MoveBar">Display move bar</string>
 
 	<string id="Calories">Calories</string>
