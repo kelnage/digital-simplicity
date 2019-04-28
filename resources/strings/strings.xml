@@ -24,6 +24,14 @@
 	<string id="BottomStat">Bottom value</string>
 	<string id="BlinkColon">Blink colon</string>
 	<string id="MoveBar">Display move bar</string>
+	
+	<string id="ColourTheme">Colour theme</string>
+	<string id="ClassicGray">Classic - gray</string>
+	<string id="ClassicWhite">Classic - white</string>
+	<string id="DarkGray">Dark - gray</string>
+	<string id="DarkWhite">Dark - white</string>
+	<string id="InverseGray">Inverted - gray</string>
+	<string id="InverseWhite">Inverted - white</string>
 
 	<string id="Calories">Calories</string>
 	<string id="CaloriesFormat">$1$ kcal</string>

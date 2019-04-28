@@ -31,6 +31,15 @@ var partialUpdates = false;
 
 class DigitalSimplicityView extends WatchUi.WatchFace {
     enum {
+        THEME_CLASSIC_GRAY,
+        THEME_CLASSIC_WHITE,
+        THEME_DARK_GRAY,
+        THEME_DARK_WHITE,
+        THEME_INVERSE_GRAY,
+        THEME_INVERSE_WHITE
+    }
+
+    enum {
         BAR_OPTION_CALORIES,
         BAR_OPTION_KILOJOULES,
         BAR_OPTION_STEPS,
@@ -53,7 +62,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     var locationInfo = null;
     var sunEvent = null;
 
-    // icons
+    // bitmaps
     var bluetoothIcon;
     var batteryIcon;
 
@@ -81,21 +90,110 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var app = Application.getApp();
         topFormat = getFormatString(app.getProperty("TopBarStat"));
         bottomFormat = getFormatString(app.getProperty("BottomBarStat"));
+        moveColour = Graphics.COLOR_DK_RED;
+        var colourTheme = app.getProperty("ColourTheme");
+        switch(colourTheme) {
+            case THEME_CLASSIC_GRAY:
+            case THEME_CLASSIC_WHITE:
+                fgColour = Graphics.COLOR_BLACK;
+                if(colourTheme == THEME_CLASSIC_GRAY) {
+                    bgColour = Graphics.COLOR_LT_GRAY;
+                } else {
+                    bgColour = Graphics.COLOR_WHITE;
+                }
+                batteryIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.BatteryIconBlack,
+                    :locX=>batteryX,
+                    :locY=>batteryY
+                });
+                bluetoothIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.BluetoothIconBlack,
+                    :locX=>bluetoothX,
+                    :locY=>bluetoothY
+                });
+                View.findDrawableById("TopLabel").setColor(bgColour);
+                View.findDrawableById("BottomLabel").setColor(bgColour);
+                break;
+            case THEME_DARK_GRAY:
+            case THEME_DARK_WHITE:
+                bgColour = Graphics.COLOR_BLACK;
+                if(colourTheme == THEME_DARK_GRAY) {
+                    fgColour = Graphics.COLOR_LT_GRAY;
+                    batteryIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BatteryIconGray,
+                        :locX=>batteryX,
+                        :locY=>batteryY
+                    });
+                    bluetoothIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BluetoothIconGray,
+                        :locX=>bluetoothX,
+                        :locY=>bluetoothY
+                    });
+                } else {
+                    fgColour = Graphics.COLOR_WHITE;
+                    batteryIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BatteryIconWhite,
+                        :locX=>batteryX,
+                        :locY=>batteryY
+                    });
+                    bluetoothIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BluetoothIconWhite,
+                        :locX=>bluetoothX,
+                        :locY=>bluetoothY
+                    });
+                }
+                View.findDrawableById("TopLabel").setColor(fgColour);
+                View.findDrawableById("BottomLabel").setColor(fgColour);
+                break;
+            case THEME_INVERSE_GRAY:
+            case THEME_INVERSE_WHITE:
+                bgColour = Graphics.COLOR_BLACK;
+                if(colourTheme == THEME_INVERSE_GRAY) {
+                    fgColour = Graphics.COLOR_LT_GRAY;
+                    batteryIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BatteryIconGray,
+                        :locX=>batteryX,
+                        :locY=>batteryY
+                    });
+                    bluetoothIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BluetoothIconGray,
+                        :locX=>bluetoothX,
+                        :locY=>bluetoothY
+                    });
+                } else {
+                    fgColour = Graphics.COLOR_WHITE;
+                    batteryIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BatteryIconWhite,
+                        :locX=>batteryX,
+                        :locY=>batteryY
+                    });
+                    bluetoothIcon = new WatchUi.Bitmap({
+                        :rezId=>Rez.Drawables.BluetoothIconWhite,
+                        :locX=>bluetoothX,
+                        :locY=>bluetoothY
+                    });
+                }
+                View.findDrawableById("TopLabel").setColor(bgColour);
+                View.findDrawableById("BottomLabel").setColor(bgColour);
+                break;
+        }
+        var dateView = View.findDrawableById("DateLabel");
+        var notificationView = View.findDrawableById("NotificationCountLabel");
+        var batteryView = View.findDrawableById("BatteryLabel");
+        var hoursView = View.findDrawableById("HoursLabel");
+        var minutesView = View.findDrawableById("MinutesLabel");
+        var periodView = View.findDrawableById("PeriodLabel");
+        dateView.setColor(fgColour);
+        notificationView.setColor(fgColour);
+        batteryView.setColor(fgColour);
+        hoursView.setColor(fgColour);
+        minutesView.setColor(fgColour);
+        periodView.setColor(fgColour);
     }
 
     function onLayout(dc) {
-        loadConfig();
-        batteryIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BatteryTemplateIcon,
-            :locX=>batteryX,
-            :locY=>batteryY
-        });
-        bluetoothIcon = new WatchUi.Bitmap({
-            :rezId=>Rez.Drawables.BluetoothIconBold,
-            :locX=>bluetoothX,
-            :locY=>bluetoothY
-        });
         setLayout(Rez.Layouts.WatchFace(dc));
+        loadConfig();
     }
 
     function onUpdate(dc) {
