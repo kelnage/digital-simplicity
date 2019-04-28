@@ -19,6 +19,7 @@
  <strings>
 
 	<string id="AppName">Digital Simplicity</string>
+	<string id="AppNameTest">Test - Digital Simplicity</string>
 
 	<string id="TopStat">Top value</string>
 	<string id="BottomStat">Bottom value</string>
