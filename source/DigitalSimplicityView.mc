@@ -26,8 +26,8 @@ using Toybox.Timer;
 using Toybox.ActivityMonitor;
 using Toybox.Position;
 
+// global state
 var partialUpdates = false;
-var locationInfo = null;
 
 class DigitalSimplicityView extends WatchUi.WatchFace {
     enum {
@@ -50,15 +50,14 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     // state
-    var sunEvent;
+    var locationInfo = null;
+    var sunEvent = null;
 
     // icons
     var bluetoothIcon;
     var batteryIcon;
 
     // layout constants
-    const fgColour = Graphics.COLOR_BLACK;
-    const bgColour = Graphics.COLOR_LT_GRAY;
     const batteryX = 178;
     const batteryY = 59;
     const bluetoothX = 38;
@@ -67,34 +66,25 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     const colonY = 123;
 
     // layout variables
+    var fgColour = Graphics.COLOR_BLACK;
+    var bgColour = Graphics.COLOR_LT_GRAY;
+    var moveColour = Graphics.COLOR_DK_RED;
     var topFormat;
     var bottomFormat;
-    var barFormatList;
 
     function initialize() {
         WatchFace.initialize();
         partialUpdates = (Toybox.WatchUi.WatchFace has :onPartialUpdate);
     }
 
+    function loadConfig() {
+        var app = Application.getApp();
+        topFormat = getFormatString(app.getProperty("TopBarStat"));
+        bottomFormat = getFormatString(app.getProperty("BottomBarStat"));
+    }
+
     function onLayout(dc) {
-        barFormatList = [
-            WatchUi.loadResource(Rez.Strings.CaloriesFormat),
-            WatchUi.loadResource(Rez.Strings.KilojoulesFormat),
-            WatchUi.loadResource(Rez.Strings.StepsFormat),
-            WatchUi.loadResource(Rez.Strings.MetresFormat),
-            WatchUi.loadResource(Rez.Strings.FeetFormat),
-            WatchUi.loadResource(Rez.Strings.MinFormat),
-            WatchUi.loadResource(Rez.Strings.MinFormat),
-            WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat),
-            "",
-            WatchUi.loadResource(Rez.Strings.HeartRateFormat),
-            WatchUi.loadResource(Rez.Strings.TimeFormat),
-            WatchUi.loadResource(Rez.Strings.PressureFormat),
-            WatchUi.loadResource(Rez.Strings.TemperatureCelsiusFormat),
-            WatchUi.loadResource(Rez.Strings.TemperatureFahrenheitFormat),
-            WatchUi.loadResource(Rez.Strings.MetresFormat),
-            WatchUi.loadResource(Rez.Strings.FeetFormat)
-        ];
+        loadConfig();
         batteryIcon = new WatchUi.Bitmap({
             :rezId=>Rez.Drawables.BatteryTemplateIcon,
             :locX=>batteryX,
@@ -138,11 +128,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         }
 
         // Format battery percentage
-        var batteryString = stats.battery.format("%d") + "%";
+        var batteryString = Math.round(stats.battery).format("%d") + "%";
 
         // Load appropriate stats
-        var topStatString = getStatString(app.getProperty("TopBarStat"), activity);
-        var bottomStatString = getStatString(app.getProperty("BottomBarStat"), activity);
+        var topStatString = getStatString(app.getProperty("TopBarStat"), topFormat, activity);
+        var bottomStatString = getStatString(app.getProperty("BottomBarStat"), bottomFormat, activity);
 
         // Update the views
         var dateView = View.findDrawableById("DateLabel");
@@ -223,18 +213,61 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     function drawMoveBar(dc, moveNumber) {
-        dc.setColor(Graphics.COLOR_DK_RED, bgColour);
+        dc.setColor(moveColour, bgColour);
         dc.fillRectangle(33, 194, moveNumber * 35, 3);
     }
 
-    function getStatString(index, activity) {
+    function getFormatString(index) {
+        // System.println("Entering getFormatString");
+        switch(index) {
+            case BAR_OPTION_CALORIES:
+                return WatchUi.loadResource(Rez.Strings.CaloriesFormat);
+            case BAR_OPTION_KILOJOULES:
+                return WatchUi.loadResource(Rez.Strings.KilojoulesFormat);
+            case BAR_OPTION_STEPS:
+                return WatchUi.loadResource(Rez.Strings.StepsFormat);
+            case BAR_OPTION_DISTANCE_METRES:
+                return WatchUi.loadResource(Rez.Strings.MetresFormat);
+            case BAR_OPTION_DISTANCE_FEET:
+                return WatchUi.loadResource(Rez.Strings.FeetFormat);
+            case BAR_OPTION_ACTIVITY_MIN_DAY:
+                return WatchUi.loadResource(Rez.Strings.MinFormat);
+            case BAR_OPTION_ACTIVITY_MIN_WEEK:
+                return WatchUi.loadResource(Rez.Strings.MinFormat);
+            case BAR_OPTION_FLOORS_ASCENDED:
+                return WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat);
+            case BAR_OPTION_NOTHING:
+                break;
+            case BAR_OPTION_HEART_RATE:
+                return WatchUi.loadResource(Rez.Strings.HeartRateFormat);
+            case BAR_OPTION_SUN_EVENT:
+                return WatchUi.loadResource(Rez.Strings.TimeFormat);
+            case BAR_OPTION_PRESSURE:
+                return WatchUi.loadResource(Rez.Strings.PressureFormat);
+            case BAR_OPTION_TEMPERATURE_C:
+                return WatchUi.loadResource(Rez.Strings.TemperatureCelsiusFormat);
+            case BAR_OPTION_TEMPERATURE_F:
+                return WatchUi.loadResource(Rez.Strings.TemperatureFahrenheitFormat);
+            case BAR_OPTION_ALTITUDE_METRES:
+                return WatchUi.loadResource(Rez.Strings.MetresFormat);
+            case BAR_OPTION_ALTITUDE_FEET:
+                return WatchUi.loadResource(Rez.Strings.FeetFormat);
+        }
+        // System.println("Exiting getFormatString without a result");
+        return "";
+    }
+
+    function getStatString(index, formatString, activity) {
         // System.println("Entering getStatString");
+        if(formatString == null) {
+            System.println("Did not receive a format string");
+            return "";
+        }
         switch(index) {
             case BAR_OPTION_CALORIES:
                 if(ActivityMonitor.Info has :calories) {
                     if(activity.calories != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [activity.calories]);
                     }
                 } else {
@@ -244,8 +277,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_KILOJOULES:
                 if(ActivityMonitor.Info has :calories) {
                     if(activity.calories != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [Math.floor(activity.calories * 4.184).format("%d")]);
                     }
                 } else {
@@ -255,8 +287,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_STEPS:
                 if(ActivityMonitor.Info has :steps) {
                     if(activity.steps != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [activity.steps]);
                     }
                 }
@@ -267,8 +298,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_DISTANCE_METRES:
                 if(ActivityMonitor.Info has :distance) {
                     if(activity.distance != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [Math.floor(activity.distance / 100).format("%d")]);
                     }
                 } else {
@@ -278,8 +308,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_DISTANCE_FEET:
                 if(ActivityMonitor.Info has :distance) {
                     if(activity.distance != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [Math.floor(activity.distance / 30.48).format("%d")]);
                     }
                 } else {
@@ -289,8 +318,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_ACTIVITY_MIN_DAY:
                 if(ActivityMonitor.Info has :activeMinutesDay) {
                     if(activity.activeMinutesDay != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [activity.activeMinutesDay.total]);
                     }
                 } else {
@@ -300,8 +328,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_ACTIVITY_MIN_WEEK:
                 if(ActivityMonitor.Info has :activeMinutesWeek) {
                     if(activity.activeMinutesWeek != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [activity.activeMinutesWeek.total]);
                     }
                 } else {
@@ -311,8 +338,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             case BAR_OPTION_FLOORS_ASCENDED:
                 if(ActivityMonitor.Info has :floorsClimbed) {
                     if(activity.floorsClimbed != null) {
-                        return Lang.format(
-                            barFormatList[index],
+                        return Lang.format(formatString,
                             [activity.floorsClimbed]);
                     }
                 } else {
@@ -327,8 +353,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(
-                                barFormatList[index],
+                            return Lang.format(formatString,
                                 [Math.floor(sample.data).format("%d")]);
                         }
                     }
@@ -338,8 +363,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                 break;
             case BAR_OPTION_SUN_EVENT:
                 if(sunEvent != null) {
-                    return Lang.format(
-                        barFormatList[index],
+                    return Lang.format(formatString,
                         [
                             sunEvent.eventTimeInfo.hour.format("%02d"),
                             sunEvent.eventTimeInfo.min.format("%02d")
@@ -352,8 +376,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(
-                                barFormatList[index],
+                            return Lang.format(formatString,
                                 [(sample.data / 100).format("%.1f")]);
                         }
                     }
@@ -367,8 +390,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(
-                                barFormatList[index],
+                            return Lang.format(formatString,
                                 [sample.data.format("%.1f")]);
                         }
                     }
@@ -382,8 +404,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(
-                                barFormatList[index],
+                            return Lang.format(formatString,
                                 [((sample.data * 1.8) + 32).format("%.1f")]);
                         }
                     }
@@ -397,14 +418,12 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(
-                                barFormatList[index],
+                            return Lang.format(formatString,
                                 [sample.data.format("%d")]);
                         }
                     }
                 } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                    return Lang.format(
-                        barFormatList[index],
+                    return Lang.format(formatString,
                         [locationInfo.altitude.format("%d")]);
                 } else {
                     return "N/S";
@@ -416,14 +435,12 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(
-                                barFormatList[index],
+                            return Lang.format(formatString,
                                 [(sample.data * 3.281).format("%d")]);
                         }
                     }
                 } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                    return Lang.format(
-                        barFormatList[index],
+                    return Lang.format(formatString,
                         [(locationInfo.altitude * 3.281).format("%d")]);
                 } else {
                     return "N/S";
