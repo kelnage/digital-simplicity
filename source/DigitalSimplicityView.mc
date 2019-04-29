@@ -73,6 +73,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     const bluetoothY = 57;
     const colonX = 130;
     const colonY = 123;
+    // workaround until font is completed
+    const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
     // layout variables
     var fgColour = Graphics.COLOR_BLACK;
@@ -201,7 +203,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         dc.setColor(fgColour, bgColour);
 
         // Get data
-        var now = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
+        var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var settings = System.getDeviceSettings();
         var stats = System.getSystemStats();
         var activity = ActivityMonitor.getInfo();
@@ -211,10 +213,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
 
         // Formatting
         var timeFormat = "$1$:$2$";
-        var dateFormat = "$1$ $2$";
 
         // Format date and time appropriately
-        var dateString = Lang.format(dateFormat, [now.day_of_week, now.day]);
+        var dateString = getDate(now);
 
         // Format notification count
         var nc = settings.notificationCount;
@@ -313,6 +314,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     function drawMoveBar(dc, moveNumber) {
         dc.setColor(moveColour, bgColour);
         dc.fillRectangle(33, 194, moveNumber * 35, 3);
+    }
+
+    function getDate(time) {
+        // Assumes Time.FORMAT_SHORT
+        return Lang.format("$1$ $2$", [days[time.day_of_week - 1], time.day]);
     }
 
     function getFormatString(index) {
