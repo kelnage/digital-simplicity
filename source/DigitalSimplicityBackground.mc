@@ -27,7 +27,28 @@ class Background extends Ui.Drawable {
     }
 
     function draw(dc) {
-        var mainBackground = new Rez.Drawables.MainBackground();
+        var app = Application.getApp();
+        var mainBackground;
+        switch(app.getProperty("ColourTheme")) {
+            case DigitalSimplicityView.THEME_CLASSIC_GRAY:
+                mainBackground = new Rez.Drawables.ClassicGrayBackground();
+                break;
+            case DigitalSimplicityView.THEME_CLASSIC_WHITE:
+                mainBackground = new Rez.Drawables.ClassicWhiteBackground();
+                break;
+            case DigitalSimplicityView.THEME_DARK_GRAY:
+                mainBackground = new Rez.Drawables.DarkGrayForeground();
+                break;
+            case DigitalSimplicityView.THEME_DARK_WHITE:
+                mainBackground = new Rez.Drawables.DarkWhiteForeground();
+                break;
+            case DigitalSimplicityView.THEME_INVERSE_GRAY:
+                mainBackground = new Rez.Drawables.InverseGrayForeground();
+                break;
+            case DigitalSimplicityView.THEME_INVERSE_WHITE:
+                mainBackground = new Rez.Drawables.InverseWhiteForeground();
+                break;
+        }
         mainBackground.draw( dc );
     }
 }

@@ -17,6 +17,17 @@
 
  -->
  <settings>
+ 
+ 	<setting propertyKey="@Properties.ColourTheme" title="@Strings.ColourTheme">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.ClassicGray</listEntry>
+            <listEntry value="1">@Strings.ClassicWhite</listEntry>
+            <listEntry value="2">@Strings.DarkGray</listEntry>
+            <listEntry value="3">@Strings.DarkWhite</listEntry>
+            <listEntry value="4">@Strings.InverseGray</listEntry>
+            <listEntry value="5">@Strings.InverseWhite</listEntry>
+        </settingConfig>
+    </setting>
 
 	<setting propertyKey="@Properties.TopBarStat" title="@Strings.TopStat">
         <settingConfig type="list">
@@ -60,11 +71,11 @@
         </settingConfig>
     </setting>
 
-	<setting propertyKey="@Properties.BlinkingColon" title="@Strings.BlinkColon">
+	<setting propertyKey="@Properties.DisplaySeconds" title="@Strings.ShowSeconds">
         <settingConfig type="boolean" />
     </setting>
 
-	<setting propertyKey="@Properties.ShowSeconds" title="@Strings.ShowSeconds">
+	<setting propertyKey="@Properties.BlinkingColon" title="@Strings.BlinkColon">
         <settingConfig type="boolean" />
     </setting>
 

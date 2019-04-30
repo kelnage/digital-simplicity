@@ -19,27 +19,24 @@ using Toybox.Application;
 using Toybox.WatchUi;
 
 class DigitalSimplicityApp extends Application.AppBase {
+    var view = null;
 
     function initialize() {
         AppBase.initialize();
+        view = new DigitalSimplicityView();
     }
 
-    // onStart() is called on application start up
-    function onStart(state) {
-    }
-
-    // onStop() is called when your application is exiting
-    function onStop(state) {
-    }
-
-    // Return the initial view of your application here
+    // Initialise the view - likely only called once?
     function getInitialView() {
-        return [ new DigitalSimplicityView() ];
+        return [ view ];
     }
 
-    // New app settings have been received so trigger a UI update
+    // Update settings if a view is available
     function onSettingsChanged() {
-        WatchUi.requestUpdate();
+        if(view != null) {
+            view.loadConfig();
+            WatchUi.requestUpdate();
+        }
     }
 
 }

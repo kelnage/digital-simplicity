@@ -40,15 +40,16 @@
 		font="@Fonts.DigitalSmallBold"
 		justification="Graphics.TEXT_JUSTIFY_LEFT"
 		color="Graphics.COLOR_BLACK" />
-	<label id="HoursLabel" x="116" y="123"
+
+	<label id="HoursLabel" x="128" y="123"
 		font="@Fonts.DigitalLarge"
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" />
-	<label id="MinutesLabel" x="198" y="123"
+	<label id="MinutesLabel" x="210" y="123"
 		font="@Fonts.DigitalLarge"
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" />
-	<label id="SecondsLabel" x="230" y="123"
+	<label id="SecondsLabel" x="221" y="123"
 		font="@Fonts.DigitalSmallBold"
 		justification="Graphics.TEXT_JUSTIFY_RIGHT"
 		color="Graphics.COLOR_BLACK" />

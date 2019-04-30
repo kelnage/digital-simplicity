@@ -4,3 +4,4 @@ bin/
 builds/
 releases/
 test/
+manifest.xml

@@ -18,12 +18,40 @@
  -->
 <drawables>
 	<bitmap id="LauncherIcon" filename="launcher_icon.png" />
-	<bitmap id="BluetoothIconBold" filename="bt_simple_bold.png" />
-	<bitmap id="BatteryTemplateIcon" filename="battery_template.png" />
-	<drawable-list id="MainBackground"
-		background="Gfx.COLOR_BLACK">
+	<bitmap id="BluetoothIconBlack" filename="bt_black.png" />
+	<bitmap id="BluetoothIconGray" filename="bt_gray.png" />
+	<bitmap id="BluetoothIconWhite" filename="bt_white.png" />
+	<bitmap id="BatteryIconBlack" filename="battery_black.png" />
+	<bitmap id="BatteryIconGray" filename="battery_gray.png" />
+	<bitmap id="BatteryIconWhite" filename="battery_white.png" />
+	<drawable-list id="ClassicGrayBackground" background="Gfx.COLOR_BLACK">
 		<shape type="rectangle" x="0" y="40" height="160" width="240"
 			color="Gfx.COLOR_LT_GRAY" />
-		<bitmap id="Trim" filename="trim.png" x="4" y="44" />
+		<bitmap id="TrimBlack" filename="trim_black.png" x="4" y="44" />
+	</drawable-list>
+	<drawable-list id="ClassicWhiteBackground" background="Gfx.COLOR_BLACK">
+		<shape type="rectangle" x="0" y="40" height="160" width="240"
+			color="Gfx.COLOR_WHITE" />
+		<bitmap id="TrimBlack" filename="trim_black.png" x="4" y="44" />
+	</drawable-list>
+	<drawable-list id="InverseGrayForeground" background="Gfx.COLOR_LT_GRAY">
+		<shape type="rectangle" x="0" y="40" height="160" width="240"
+			color="Gfx.COLOR_BLACK" />
+		<bitmap id="TrimGray" filename="trim_gray.png" x="4" y="44" />
+	</drawable-list>
+	<drawable-list id="DarkGrayForeground" background="Gfx.COLOR_BLACK">
+		<shape type="rectangle" x="0" y="40" height="160" width="240"
+			color="Gfx.COLOR_BLACK" />
+		<bitmap id="TrimGray" filename="trim_gray.png" x="4" y="44" />
+	</drawable-list>
+	<drawable-list id="InverseWhiteForeground" background="Gfx.COLOR_WHITE">
+		<shape type="rectangle" x="0" y="40" height="160" width="240"
+			color="Gfx.COLOR_BLACK" />
+		<bitmap id="TrimWhite" filename="trim_white.png" x="4" y="44" />
+	</drawable-list>
+	<drawable-list id="DarkWhiteForeground" background="Gfx.COLOR_BLACK">
+		<shape type="rectangle" x="0" y="40" height="160" width="240"
+			color="Gfx.COLOR_BLACK" />
+		<bitmap id="TrimWhite" filename="trim_white.png" x="4" y="44" />
 	</drawable-list>
 </drawables>
