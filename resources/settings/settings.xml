@@ -71,6 +71,10 @@
         </settingConfig>
     </setting>
 
+	<setting propertyKey="@Properties.DisplaySeconds" title="@Strings.ShowSeconds">
+        <settingConfig type="boolean" />
+    </setting>
+
 	<setting propertyKey="@Properties.BlinkingColon" title="@Strings.BlinkColon">
         <settingConfig type="boolean" />
     </setting>

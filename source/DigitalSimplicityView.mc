@@ -61,17 +61,21 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     // state
     var locationInfo = null;
     var sunEvent = null;
+    var is24Hour = false;
 
     // bitmaps
     var bluetoothIcon;
     var batteryIcon;
 
     // layout constants
+    const baselineY = 123;
+    const midlineY = 89;
     const batteryX = 178;
     const batteryY = 59;
     const bluetoothX = 38;
     const bluetoothY = 57;
-    const colonX = 130;
+    const periodX = 32;
+    const secondsY = 124;
     const colonY = 123;
     // workaround until font is completed
     const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -80,6 +84,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     var fgColour = Graphics.COLOR_BLACK;
     var bgColour = Graphics.COLOR_LT_GRAY;
     var moveColour = Graphics.COLOR_DK_RED;
+    var colonX = 130;
+    var secondsX = 191;
     var topFormat;
     var bottomFormat;
 
@@ -89,11 +95,40 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     function loadConfig() {
+        // System.println("Loading config");
         var app = Application.getApp();
+        var settings = System.getDeviceSettings();
+        is24Hour = settings.is24Hour;
         topFormat = getFormatString(app.getProperty("TopBarStat"));
         bottomFormat = getFormatString(app.getProperty("BottomBarStat"));
         moveColour = Graphics.COLOR_DK_RED;
         var colourTheme = app.getProperty("ColourTheme");
+        var displaySeconds = app.getProperty("DisplaySeconds");
+        var dateView = View.findDrawableById("DateLabel");
+        var notificationView = View.findDrawableById("NotificationCountLabel");
+        var batteryView = View.findDrawableById("BatteryLabel");
+        var hoursView = View.findDrawableById("HoursLabel");
+        var minutesView = View.findDrawableById("MinutesLabel");
+        var secondsView = View.findDrawableById("SecondsLabel");
+        var periodView = View.findDrawableById("PeriodLabel");
+        if(displaySeconds) {
+            var baselineX = 208;
+            if(is24Hour) {
+                baselineX = 221;
+            }
+            periodView.setLocation(periodX, 89);
+            hoursView.setLocation(baselineX - 116, baselineY); // 92 normal, 105 if 24 hours
+            colonX = baselineX - 113; // 95 normal, 108 if 24 hours
+            minutesView.setLocation(baselineX - 32, baselineY); // 176 normal, 189 if 24 hours
+            secondsX = baselineX - 30;
+            secondsView.setLocation(baselineX, baselineY);
+        } else {
+            periodView.setLocation(periodX, 161);
+            hoursView.setLocation(128, baselineY);
+            minutesView.setLocation(210, baselineY);
+            colonX = 130;
+            secondsView.setText("");
+        }
         switch(colourTheme) {
             case THEME_CLASSIC_GRAY:
             case THEME_CLASSIC_WHITE:
@@ -179,17 +214,12 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                 View.findDrawableById("BottomLabel").setColor(bgColour);
                 break;
         }
-        var dateView = View.findDrawableById("DateLabel");
-        var notificationView = View.findDrawableById("NotificationCountLabel");
-        var batteryView = View.findDrawableById("BatteryLabel");
-        var hoursView = View.findDrawableById("HoursLabel");
-        var minutesView = View.findDrawableById("MinutesLabel");
-        var periodView = View.findDrawableById("PeriodLabel");
         dateView.setColor(fgColour);
         notificationView.setColor(fgColour);
         batteryView.setColor(fgColour);
         hoursView.setColor(fgColour);
         minutesView.setColor(fgColour);
+        secondsView.setColor(fgColour);
         periodView.setColor(fgColour);
     }
 
@@ -202,14 +232,19 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         dc.clearClip();
         dc.setColor(fgColour, bgColour);
 
+        var settings = System.getDeviceSettings();
+        if(is24Hour != settings.is24Hour) {
+            // this will be slow - but should not be called regularly
+            // workaround for onSettingsChanged not being triggered by device settings changes
+            // is24Hour will be updated by loadConfig
+            loadConfig();
+        }
+
         // Get data
         var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-        var settings = System.getDeviceSettings();
         var stats = System.getSystemStats();
         var activity = ActivityMonitor.getInfo();
         var app = Application.getApp();
-
-        // System.println(settings.connectionInfo);
 
         // Formatting
         var timeFormat = "$1$:$2$";
@@ -258,14 +293,19 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
         }
-        onPartialUpdate(dc);
+        drawColon(dc, app.getProperty("BlinkingColon"), now.sec);
     }
 
     function onPartialUpdate(dc) {
         var now = System.getClockTime();
         var app = Application.getApp();
+        if(app.getProperty("DisplaySeconds")) {
+            dc.setClip(secondsX, secondsY, 30, 22);
+            drawSeconds(dc, now.sec);
+        }
         dc.setClip(colonX, colonY, 8, 60);
         drawColon(dc, app.getProperty("BlinkingColon"), now.sec);
+
     }
 
     function drawTime(dc, settings, app, now) {
@@ -289,9 +329,22 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var hoursView = View.findDrawableById("HoursLabel");
         var minutesView = View.findDrawableById("MinutesLabel");
         var periodView = View.findDrawableById("PeriodLabel");
+        if(app.getProperty("DisplaySeconds")) {
+            var secondsView = View.findDrawableById("SecondsLabel");
+            secondsView.setText(now.sec.format("%02d"));
+        }
         hoursView.setText(hours + "");
         minutesView.setText(minutes);
         periodView.setText(period);
+    }
+
+    function drawSeconds(dc, seconds) {
+        dc.setColor(bgColour, bgColour);
+        dc.fillRectangle(secondsX, secondsY, 30, 22);
+        dc.setColor(fgColour, bgColour);
+        var secondsView = View.findDrawableById("SecondsLabel");
+        secondsView.setText(seconds.format("%02d"));
+        secondsView.draw(dc);
     }
 
     function drawColon(dc, blinking, seconds) {
