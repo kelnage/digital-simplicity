@@ -39,25 +39,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         THEME_INVERSE_WHITE
     }
 
-    enum {
-        BAR_OPTION_CALORIES,
-        BAR_OPTION_KILOJOULES,
-        BAR_OPTION_STEPS,
-        BAR_OPTION_DISTANCE_METRES,
-        BAR_OPTION_DISTANCE_FEET,
-        BAR_OPTION_ACTIVITY_MIN_DAY,
-        BAR_OPTION_ACTIVITY_MIN_WEEK,
-        BAR_OPTION_FLOORS_ASCENDED,
-        BAR_OPTION_NOTHING,
-        BAR_OPTION_HEART_RATE,
-        BAR_OPTION_SUN_EVENT, // 10
-        BAR_OPTION_PRESSURE,
-        BAR_OPTION_TEMPERATURE_C,
-        BAR_OPTION_TEMPERATURE_F,
-        BAR_OPTION_ALTITUDE_METRES,
-        BAR_OPTION_ALTITUDE_FEET
-    }
-
     // state
     var locationInfo = null;
     var sunEvent = null;
@@ -99,8 +80,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var app = Application.getApp();
         var settings = System.getDeviceSettings();
         is24Hour = settings.is24Hour;
-        topFormat = getFormatString(app.getProperty("TopBarStat"));
-        bottomFormat = getFormatString(app.getProperty("BottomBarStat"));
+        topFormat = StatOptions.getFormatString(app.getProperty("TopBarStat"));
+        bottomFormat = StatOptions.getFormatString(app.getProperty("BottomBarStat"));
         moveColour = Graphics.COLOR_DK_RED;
         var colourTheme = app.getProperty("ColourTheme");
         var displaySeconds = app.getProperty("DisplaySeconds");
@@ -265,8 +246,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var batteryString = Math.round(stats.battery).format("%d") + "%";
 
         // Load appropriate stats
-        var topStatString = getStatString(app.getProperty("TopBarStat"), topFormat, activity);
-        var bottomStatString = getStatString(app.getProperty("BottomBarStat"), bottomFormat, activity);
+        var topStatString = StatOptions.getStatString(app.getProperty("TopBarStat"), topFormat, sunEvent, activity, settings);
+        var bottomStatString = StatOptions.getStatString(app.getProperty("BottomBarStat"), bottomFormat, sunEvent, activity, settings);
 
         // Update the views
         var dateView = View.findDrawableById("DateLabel");
@@ -372,240 +353,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     function getDate(time) {
         // Assumes Time.FORMAT_SHORT
         return Lang.format("$1$ $2$", [days[time.day_of_week - 1], time.day]);
-    }
-
-    function getFormatString(index) {
-        // System.println("Entering getFormatString");
-        switch(index) {
-            case BAR_OPTION_CALORIES:
-                return WatchUi.loadResource(Rez.Strings.CaloriesFormat);
-            case BAR_OPTION_KILOJOULES:
-                return WatchUi.loadResource(Rez.Strings.KilojoulesFormat);
-            case BAR_OPTION_STEPS:
-                return WatchUi.loadResource(Rez.Strings.StepsFormat);
-            case BAR_OPTION_DISTANCE_METRES:
-                return WatchUi.loadResource(Rez.Strings.MetresFormat);
-            case BAR_OPTION_DISTANCE_FEET:
-                return WatchUi.loadResource(Rez.Strings.FeetFormat);
-            case BAR_OPTION_ACTIVITY_MIN_DAY:
-                return WatchUi.loadResource(Rez.Strings.MinFormat);
-            case BAR_OPTION_ACTIVITY_MIN_WEEK:
-                return WatchUi.loadResource(Rez.Strings.MinFormat);
-            case BAR_OPTION_FLOORS_ASCENDED:
-                return WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat);
-            case BAR_OPTION_NOTHING:
-                break;
-            case BAR_OPTION_HEART_RATE:
-                return WatchUi.loadResource(Rez.Strings.HeartRateFormat);
-            case BAR_OPTION_SUN_EVENT:
-                return WatchUi.loadResource(Rez.Strings.TimeFormat);
-            case BAR_OPTION_PRESSURE:
-                return WatchUi.loadResource(Rez.Strings.PressureFormat);
-            case BAR_OPTION_TEMPERATURE_C:
-                return WatchUi.loadResource(Rez.Strings.TemperatureCelsiusFormat);
-            case BAR_OPTION_TEMPERATURE_F:
-                return WatchUi.loadResource(Rez.Strings.TemperatureFahrenheitFormat);
-            case BAR_OPTION_ALTITUDE_METRES:
-                return WatchUi.loadResource(Rez.Strings.MetresFormat);
-            case BAR_OPTION_ALTITUDE_FEET:
-                return WatchUi.loadResource(Rez.Strings.FeetFormat);
-        }
-        // System.println("Exiting getFormatString without a result");
-        return "";
-    }
-
-    function getStatString(index, formatString, activity) {
-        // System.println("Entering getStatString");
-        if(formatString == null) {
-            System.println("Did not receive a format string");
-            return "";
-        }
-        switch(index) {
-            case BAR_OPTION_CALORIES:
-                if(ActivityMonitor.Info has :calories) {
-                    if(activity.calories != null) {
-                        return Lang.format(formatString,
-                            [activity.calories]);
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_KILOJOULES:
-                if(ActivityMonitor.Info has :calories) {
-                    if(activity.calories != null) {
-                        return Lang.format(formatString,
-                            [Math.floor(activity.calories * 4.184).format("%d")]);
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_STEPS:
-                if(ActivityMonitor.Info has :steps) {
-                    if(activity.steps != null) {
-                        return Lang.format(formatString,
-                            [activity.steps]);
-                    }
-                }
-                else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_DISTANCE_METRES:
-                if(ActivityMonitor.Info has :distance) {
-                    if(activity.distance != null) {
-                        return Lang.format(formatString,
-                            [Math.floor(activity.distance / 100).format("%d")]);
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_DISTANCE_FEET:
-                if(ActivityMonitor.Info has :distance) {
-                    if(activity.distance != null) {
-                        return Lang.format(formatString,
-                            [Math.floor(activity.distance / 30.48).format("%d")]);
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_ACTIVITY_MIN_DAY:
-                if(ActivityMonitor.Info has :activeMinutesDay) {
-                    if(activity.activeMinutesDay != null) {
-                        return Lang.format(formatString,
-                            [activity.activeMinutesDay.total]);
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_ACTIVITY_MIN_WEEK:
-                if(ActivityMonitor.Info has :activeMinutesWeek) {
-                    if(activity.activeMinutesWeek != null) {
-                        return Lang.format(formatString,
-                            [activity.activeMinutesWeek.total]);
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_FLOORS_ASCENDED:
-                if(ActivityMonitor.Info has :floorsClimbed) {
-                    if(activity.floorsClimbed != null) {
-                        return Lang.format(formatString,
-                            [activity.floorsClimbed]);
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_NOTHING:
-                break;
-            case BAR_OPTION_HEART_RATE:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getHeartRateHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getHeartRateHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [Math.floor(sample.data).format("%d")]);
-                        }
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_SUN_EVENT:
-                if(sunEvent != null) {
-                    return Lang.format(formatString,
-                        [
-                            sunEvent.eventTimeInfo.hour.format("%02d"),
-                            sunEvent.eventTimeInfo.min.format("%02d")
-                        ]);
-                }
-                break;
-            case BAR_OPTION_PRESSURE:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getPressureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getPressureHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [(sample.data / 100).format("%.1f")]);
-                        }
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_TEMPERATURE_C:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getTemperatureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [sample.data.format("%.1f")]);
-                        }
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_TEMPERATURE_F:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getTemperatureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [((sample.data * 1.8) + 32).format("%.1f")]);
-                        }
-                    }
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_ALTITUDE_METRES:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getElevationHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [sample.data.format("%d")]);
-                        }
-                    }
-                } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                    return Lang.format(formatString,
-                        [locationInfo.altitude.format("%d")]);
-                } else {
-                    return "N/S";
-                }
-                break;
-            case BAR_OPTION_ALTITUDE_FEET:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getElevationHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [(sample.data * 3.281).format("%d")]);
-                        }
-                    }
-                } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                    return Lang.format(formatString,
-                        [(locationInfo.altitude * 3.281).format("%d")]);
-                } else {
-                    return "N/S";
-                }
-                break;
-        }
-        // System.println("Exiting getStatString without a result");
-        return "";
     }
 
     function updatePosition() {
