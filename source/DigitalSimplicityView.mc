@@ -15,16 +15,17 @@
     along with DigitalSimplicity.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using Toybox.WatchUi;
-using Toybox.Graphics;
-using Toybox.System;
-using Toybox.Lang;
+using Toybox.Activity;
+using Toybox.ActivityMonitor;
 using Toybox.Application;
+using Toybox.Graphics;
+using Toybox.Lang;
+using Toybox.Position;
+using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 using Toybox.Timer;
-using Toybox.ActivityMonitor;
-using Toybox.Position;
+using Toybox.WatchUi;
 
 // global state
 var partialUpdates = false;
@@ -227,9 +228,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var activity = ActivityMonitor.getInfo();
         var app = Application.getApp();
 
-        // Formatting
-        var timeFormat = "$1$:$2$";
-
         // Format date and time appropriately
         var dateString = getDate(now);
 
@@ -302,10 +300,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             if (hours > 12) {
                 hours = hours - 12;
             }
-        } else {
-            if (app.getProperty("UseMilitaryFormat")) {
-                hours = hours.format("%02d");
-            }
         }
         var hoursView = View.findDrawableById("HoursLabel");
         var minutesView = View.findDrawableById("MinutesLabel");
@@ -355,21 +349,39 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         return Lang.format("$1$ $2$", [days[time.day_of_week - 1], time.day]);
     }
 
+    function parseActivityInfo(activityInfo) {
+        var locationInfo = new Position.Info();
+        if(Activity.Info has :currentLocationAccuracy && activityInfo.currentLocationAccuracy != null) {
+            locationInfo.accuracy = activityInfo.currentLocationAccuracy;
+            if(Position.Info has :position && Activity.Info has :currentLocation) {
+                locationInfo.position = activityInfo.currentLocation;
+            }
+            if(Position.Info has :altitude && Activity.Info has :altitude) {
+                locationInfo.altitude = activityInfo.altitude;
+            }
+        } else {
+            locationInfo.accuracy = Position.QUALITY_NOT_AVAILABLE;
+        }
+        return locationInfo;
+    }
+
     function updatePosition() {
         // System.println("Entering updatePosition");
         if(Position has :getInfo) {
             locationInfo = Position.getInfo();
-            if(Application.getApp().getProperty("TopBarStat") == 10 || Application.getApp().getProperty("BottomBarStat") == 10) {
-                if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                    var now = Time.now();
-                    if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
-                        (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks
-                        // TODO: location based checks?
-                        ) {
-                        // Using Time.today() rather than Time.now()
-                        sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
-                    }
-                }
+        }
+        if((locationInfo == null || locationInfo.accuracy == Position.QUALITY_NOT_AVAILABLE) && Activity has :getActivityInfo && Activity.Info has :currentLocation) {
+            locationInfo = parseActivityInfo(Activity.getActivityInfo());
+        }
+        if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE &&
+            (Application.getApp().getProperty("TopBarStat") == 10 || Application.getApp().getProperty("BottomBarStat") == 10)) {
+            var now = Time.now();
+            if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
+                (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks
+                // TODO: location based checks?
+                ) {
+                // Using Time.today() rather than Time.now()
+                sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
             }
         }
         // System.println("Exiting updatePosition");

@@ -23,8 +23,6 @@ using Toybox.Time.Gregorian;
 using Toybox.Position;
 
 class SunData {
-    static const TWOPI = Math.PI * 2.0d;
-
     enum {
         SUNRISE, SUNSET
     }
@@ -102,11 +100,11 @@ class SunData {
         // DAYS
         var n = Math.round(unixToJulian(moment.value()) + 0.5) - 2451545.0d + 0.0008d;
         // JULIAN DAYS
-        var Jstar = n - (lon / TWOPI);
+        var Jstar = n - (lon / (Math.PI * 2.0d));
         // 357.5291 degrees = 6.24006 radians
         // 0.98560028 degrees = 0.01720197 radians
         // ANGULAR DISTANCE
-        var M = mod((6.24006d + (0.01720197 * Jstar)), TWOPI);
+        var M = mod((6.24006d + (0.01720197 * Jstar)), (Math.PI * 2.0d));
         var sinM = Math.sin(M);
         // 1.9148 degrees = 0.03342 radians
         // 0.02 degrees = 0.000349 radians
@@ -116,7 +114,7 @@ class SunData {
         // 180 degrees = PI radians
         // 102.9372 degrees = 1.79659 radians
         // ANGULAR DISTANCE
-        var lambda = mod((M + C + Math.PI + 1.79659d), TWOPI);
+        var lambda = mod((M + C + Math.PI + 1.79659d), (Math.PI * 2.0d));
         // JULIAN DAYS
         var Jtransit = 2451545.0d + Jstar + (0.0053d * sinM) - (0.0069d * Math.sin(2 * lambda));
         // 23.44 degrees = 0.40911 radians
@@ -125,8 +123,8 @@ class SunData {
         var delta = Math.asin(Math.sin(lambda) * 0.397793d);
         // ANGULAR DISTANCE
         var omega = Math.acos((Math.sin(Math.toRadians(-0.83d + ((-2.076 * Math.sqrt(altitude)) / 60))) - (Math.sin(lat) * Math.sin(delta))) / (Math.cos(lat) * Math.cos(delta)));
-        var sunrise = new Time.Moment(julianToUnix(Jtransit - (omega / TWOPI)));
-        var sunset = new Time.Moment(julianToUnix(Jtransit + (omega / TWOPI)));
+        var sunrise = new Time.Moment(julianToUnix(Jtransit - (omega / (Math.PI * 2.0d))));
+        var sunset = new Time.Moment(julianToUnix(Jtransit + (omega / (Math.PI * 2.0d))));
         // System.println("Now: " + now.value() + ", Sunrise: " + sunrise.value() + ", Sunset: " + sunset.value());
         // if we're calculating tomorrow's sunrise or we are before today's sunrise, show ETA of sunrise
         if(nextDay || now.compare(sunrise) < 0) {

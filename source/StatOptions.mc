@@ -86,12 +86,12 @@ class StatOptions {
             System.println("Did not receive a format string");
             return "";
         }
+        var args = null;
         switch(index) {
             case OPTION_CALORIES:
                 if(ActivityMonitor.Info has :calories) {
                     if(activity.calories != null) {
-                        return Lang.format(formatString,
-                            [activity.calories]);
+                        args = [activity.calories];
                     }
                 } else {
                     return "N/S";
@@ -100,8 +100,7 @@ class StatOptions {
             case OPTION_KILOJOULES:
                 if(ActivityMonitor.Info has :calories) {
                     if(activity.calories != null) {
-                        return Lang.format(formatString,
-                            [Math.floor(activity.calories * 4.184).format("%d")]);
+                        args = [Math.floor(activity.calories * 4.184).format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -110,8 +109,7 @@ class StatOptions {
             case OPTION_STEPS:
                 if(ActivityMonitor.Info has :steps) {
                     if(activity.steps != null) {
-                        return Lang.format(formatString,
-                            [activity.steps]);
+                        args = [activity.steps];
                     }
                 }
                 else {
@@ -121,8 +119,7 @@ class StatOptions {
             case OPTION_DISTANCE_METRES:
                 if(ActivityMonitor.Info has :distance) {
                     if(activity.distance != null) {
-                        return Lang.format(formatString,
-                            [Math.floor(activity.distance / 100).format("%d")]);
+                        args = [Math.floor(activity.distance / 100).format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -131,8 +128,7 @@ class StatOptions {
             case OPTION_DISTANCE_FEET:
                 if(ActivityMonitor.Info has :distance) {
                     if(activity.distance != null) {
-                        return Lang.format(formatString,
-                            [Math.floor(activity.distance / 30.48).format("%d")]);
+                        args = [Math.floor(activity.distance / 30.48).format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -141,8 +137,7 @@ class StatOptions {
             case OPTION_ACTIVITY_MIN_DAY:
                 if(ActivityMonitor.Info has :activeMinutesDay) {
                     if(activity.activeMinutesDay != null) {
-                        return Lang.format(formatString,
-                            [activity.activeMinutesDay.total]);
+                        args = [activity.activeMinutesDay.total];
                     }
                 } else {
                     return "N/S";
@@ -151,8 +146,7 @@ class StatOptions {
             case OPTION_ACTIVITY_MIN_WEEK:
                 if(ActivityMonitor.Info has :activeMinutesWeek) {
                     if(activity.activeMinutesWeek != null) {
-                        return Lang.format(formatString,
-                            [activity.activeMinutesWeek.total]);
+                        args = [activity.activeMinutesWeek.total];
                     }
                 } else {
                     return "N/S";
@@ -161,23 +155,21 @@ class StatOptions {
             case OPTION_FLOORS_ASCENDED:
                 if(ActivityMonitor.Info has :floorsClimbed) {
                     if(activity.floorsClimbed != null) {
-                        return Lang.format(formatString,
-                            [activity.floorsClimbed]);
+                        args = [activity.floorsClimbed];
                     }
                 } else {
                     return "N/S";
                 }
                 break;
             case OPTION_NOTHING:
-                break;
+                return "";
             case OPTION_HEART_RATE:
                 if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getHeartRateHistory)) {
                     var sampleIterator = Toybox.SensorHistory.getHeartRateHistory({:period => 1});
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [Math.floor(sample.data).format("%d")]);
+                            args = [Math.floor(sample.data).format("%d")];
                         }
                     }
                 } else {
@@ -187,11 +179,7 @@ class StatOptions {
             case OPTION_SUN_EVENT:
                 if(sunEvent != null) {
                     if(settings.is24Hour) {
-                        return Lang.format(formatString,
-                            [
-                                sunEvent.eventTimeInfo.hour.format("%02d"),
-                                sunEvent.eventTimeInfo.min.format("%02d")
-                            ]);
+                        args = [sunEvent.eventTimeInfo.hour.format("%02d"), sunEvent.eventTimeInfo.min.format("%02d")];
                     } else {
                         var hour = sunEvent.eventTimeInfo.hour;
                         var period = "am";
@@ -201,11 +189,7 @@ class StatOptions {
                             }
                             period = "pm";
                         }
-                        return Lang.format(formatString,
-                            [
-                                hour.format("%d"),
-                                sunEvent.eventTimeInfo.min.format("%02d") + period
-                            ]);
+                        args = [hour.format("%d"), sunEvent.eventTimeInfo.min.format("%02d") + period];
                     }
                 }
                 break;
@@ -215,8 +199,7 @@ class StatOptions {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [(sample.data / 100).format("%.1f")]);
+                            args = [(sample.data / 100).format("%.1f")];
                         }
                     }
                 } else {
@@ -229,8 +212,7 @@ class StatOptions {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [sample.data.format("%.1f")]);
+                            args = [sample.data.format("%.1f")];
                         }
                     }
                 } else {
@@ -243,8 +225,7 @@ class StatOptions {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [((sample.data * 1.8) + 32).format("%.1f")]);
+                            args = [((sample.data * 1.8) + 32).format("%.1f")];
                         }
                     }
                 } else {
@@ -257,13 +238,13 @@ class StatOptions {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [sample.data.format("%d")]);
+                            args = [sample.data.format("%d")];
                         }
                     }
-                } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                    return Lang.format(formatString,
-                        [locationInfo.altitude.format("%d")]);
+                } else if(Position.Info has :altitude) {
+                    if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                        args = [locationInfo.altitude.format("%d")];
+                    }
                 } else {
                     return "N/S";
                 }
@@ -274,19 +255,22 @@ class StatOptions {
                     if(sampleIterator != null) {
                         var sample = sampleIterator.next();
                         if(sample != null && sample.data != null) {
-                            return Lang.format(formatString,
-                                [(sample.data * 3.281).format("%d")]);
+                            args = [(sample.data * 3.281).format("%d")];
                         }
                     }
-                } else if(Position.Info has :altitude && locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                    return Lang.format(formatString,
-                        [(locationInfo.altitude * 3.281).format("%d")]);
+                } else if(Position.Info has :altitude) {
+                    if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                        args = [locationInfo.altitude.format("%d")];
+                    }
                 } else {
                     return "N/S";
                 }
                 break;
         }
+        if(args != null) {
+            return Lang.format(formatString, args);
+        }
         // System.println("Exiting getStatString without a result");
-        return "";
+        return "N/D";
     }
 }
