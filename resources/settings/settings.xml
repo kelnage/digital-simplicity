@@ -38,7 +38,9 @@
             <listEntry value="8">@Strings.Nothing</listEntry>
             <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
+            <listEntry value="16">@Strings.DistanceKilometres</listEntry>
             <listEntry value="3">@Strings.DistanceMetres</listEntry>
+            <listEntry value="17">@Strings.DistanceMiles</listEntry>
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>
@@ -59,7 +61,9 @@
             <listEntry value="8">@Strings.Nothing</listEntry>
             <listEntry value="0">@Strings.Calories</listEntry>
             <listEntry value="4">@Strings.DistanceFeet</listEntry>
+            <listEntry value="16">@Strings.DistanceKilometres</listEntry>
             <listEntry value="3">@Strings.DistanceMetres</listEntry>
+            <listEntry value="17">@Strings.DistanceMiles</listEntry>
             <listEntry value="7">@Strings.FloorsClimbed</listEntry>
             <listEntry value="9">@Strings.HeartRate</listEntry>
             <listEntry value="1">@Strings.Kilojoules</listEntry>

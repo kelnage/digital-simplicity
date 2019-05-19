@@ -27,7 +27,7 @@ class StatOptions {
         OPTION_STEPS,
         OPTION_DISTANCE_METRES,
         OPTION_DISTANCE_FEET,
-        OPTION_ACTIVITY_MIN_DAY,
+        OPTION_ACTIVITY_MIN_DAY, // 5
         OPTION_ACTIVITY_MIN_WEEK,
         OPTION_FLOORS_ASCENDED,
         OPTION_NOTHING,
@@ -37,7 +37,9 @@ class StatOptions {
         OPTION_TEMPERATURE_C,
         OPTION_TEMPERATURE_F,
         OPTION_ALTITUDE_METRES,
-        OPTION_ALTITUDE_FEET
+        OPTION_ALTITUDE_FEET, // 15
+        OPTION_DISTANCE_KILOMETRES,
+        OPTION_DISTANCE_MILES
     }
 
     static function getFormatString(index) {
@@ -75,6 +77,10 @@ class StatOptions {
                 return WatchUi.loadResource(Rez.Strings.MetresFormat);
             case OPTION_ALTITUDE_FEET:
                 return WatchUi.loadResource(Rez.Strings.FeetFormat);
+            case OPTION_DISTANCE_KILOMETRES:
+                return WatchUi.loadResource(Rez.Strings.KilometresFormat);
+            case OPTION_DISTANCE_MILES:
+                return WatchUi.loadResource(Rez.Strings.MilesFormat);
         }
         // System.println("Exiting getFormatString without a result");
         return "";
@@ -261,6 +267,24 @@ class StatOptions {
                 } else if(Position.Info has :altitude) {
                     if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
                         args = [locationInfo.altitude.format("%d")];
+                    }
+                } else {
+                    return "N/S";
+                }
+                break;
+            case OPTION_DISTANCE_KILOMETRES:
+                if(ActivityMonitor.Info has :distance) {
+                    if(activity.distance != null) {
+                        args = [(activity.distance / 100000.0).format("%.2f")];
+                    }
+                } else {
+                    return "N/S";
+                }
+                break;
+            case OPTION_DISTANCE_MILES:
+                if(ActivityMonitor.Info has :distance) {
+                    if(activity.distance != null) {
+                        args = [(activity.distance / 160934.4).format("%.2f")];
                     }
                 } else {
                     return "N/S";

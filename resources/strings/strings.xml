@@ -36,32 +36,37 @@
 	<string id="InverseWhite">Inverted - white</string>
 
 	<string id="Calories">Calories</string>
-	<string id="CaloriesFormat">$1$ kcal</string>
 	<string id="Kilojoules">Kilojoules</string>
-	<string id="KilojoulesFormat">$1$kJ</string>
 	<string id="Steps">Steps</string>
-	<string id="StepsFormat">$1$ steps</string>
 	<string id="DistanceMetres">Distance (metres)</string>
-	<string id="MetresFormat">$1$m</string>
 	<string id="DistanceFeet">Distance (feet)</string>
-	<string id="FeetFormat">$1$ft</string>
 	<string id="ActivityMinDay">Activity minutes (day)</string>
-	<string id="MinFormat">$1$min</string>
 	<string id="ActivityMinWeek">Activity minutes (week)</string>
 	<string id="FloorsClimbed">Floors climbed</string>
-	<string id="FloorsClimbedFormat">$1$ floors</string>
 	<string id="HeartRate">Heart rate</string>
-	<string id="HeartRateFormat">$1$ BPM</string>
 	<string id="SunEvent">Next sun event</string>
-	<string id="TimeFormat">$1$:$2$</string>
 	<string id="Nothing">Blank</string>
 	<string id="Pressure">Pressure (hPa)</string>
-	<string id="PressureFormat">$1$ hPa</string>
 	<string id="TemperatureCelsius">Temperature (°C)</string>
-	<string id="TemperatureCelsiusFormat">$1$°C</string>
 	<string id="TemperatureFahrenheit">Temperature (°F)</string>
-	<string id="TemperatureFahrenheitFormat">$1$°F</string>
 	<string id="AltitudeMetres">Altitude (metres)</string>
 	<string id="AltitudeFeet">Altitude (feet)</string>
+	<string id="DistanceKilometres">Distance (kilometres)</string>
+	<string id="DistanceMiles">Distance (miles)</string>
+
+	<string id="CaloriesFormat">$1$ kcal</string>
+	<string id="KilojoulesFormat">$1$kJ</string>
+	<string id="StepsFormat">$1$ steps</string>
+	<string id="MetresFormat">$1$m</string>
+	<string id="FeetFormat">$1$ft</string>
+	<string id="KilometresFormat">$1$km</string>
+	<string id="MilesFormat">$1$mi</string>
+	<string id="MinFormat">$1$min</string>
+	<string id="FloorsClimbedFormat">$1$ floors</string>
+	<string id="HeartRateFormat">$1$ BPM</string>
+	<string id="TimeFormat">$1$:$2$</string>
+	<string id="PressureFormat">$1$ hPa</string>
+	<string id="TemperatureCelsiusFormat">$1$°C</string>
+	<string id="TemperatureFahrenheitFormat">$1$°F</string>
 
 </strings>
