@@ -42,6 +42,15 @@ class StatOptions {
         OPTION_DISTANCE_MILES
     }
 
+    static function requiresLocation(index) {
+        return StatOptions.requiresSunData(index) ||
+            ((index == OPTION_ALTITUDE_METRES || index == OPTION_ALTITUDE_FEET) && !(Toybox has :SensorHistory && Toybox.SensorHistory has :getElevationHistory));
+    }
+
+    static function requiresSunData(index) {
+        return index == OPTION_SUN_EVENT;
+    }
+
     static function getFormatString(index) {
         // System.println("Entering getFormatString");
         switch(index) {

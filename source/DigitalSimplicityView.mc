@@ -367,21 +367,25 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
 
     function updatePosition() {
         // System.println("Entering updatePosition");
-        if(Position has :getInfo) {
-            locationInfo = Position.getInfo();
-        }
-        if((locationInfo == null || locationInfo.accuracy == Position.QUALITY_NOT_AVAILABLE) && Activity has :getActivityInfo && Activity.Info has :currentLocation) {
-            locationInfo = parseActivityInfo(Activity.getActivityInfo());
-        }
-        if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE &&
-            (Application.getApp().getProperty("TopBarStat") == 10 || Application.getApp().getProperty("BottomBarStat") == 10)) {
-            var now = Time.now();
-            if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
-                (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks
-                // TODO: location based checks?
-                ) {
-                // Using Time.today() rather than Time.now()
-                sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
+        var top = Application.getApp().getProperty("TopBarStat");
+        var bottom = Application.getApp().getProperty("BottomBarStat");
+        if(StatOptions.requiresLocation(top) || StatOptions.requiresLocation(bottom)) {
+            if(Position has :getInfo) {
+                locationInfo = Position.getInfo();
+            }
+            if((locationInfo == null || locationInfo.accuracy == Position.QUALITY_NOT_AVAILABLE) && Activity has :getActivityInfo && Activity.Info has :currentLocation) {
+                locationInfo = parseActivityInfo(Activity.getActivityInfo());
+            }
+            if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE &&
+                    (StatOptions.requiresSunData(top) || StatOptions.requiresSunData(bottom))) {
+                var now = Time.now();
+                if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
+                    (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks
+                    // TODO: location based checks?
+                    ) {
+                    // Using Time.today() rather than Time.now()
+                    sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
+                }
             }
         }
         // System.println("Exiting updatePosition");

@@ -78,6 +78,9 @@ class SunData {
     // locationInfo is a Position.Info object
     // altitude is in metres
     static function calculateSunriseSunset(moment, locationInfo, nextDay, prevData) {
+        if(locationInfo == null || locationInfo.position == null) {
+            return null;
+        }
         // System.println(moment.value() + ";"
         //     + locationInfo.accuracy + ";" + locationInfo.position.toDegrees() + ";" + locationInfo.altitude + ";"
         //     + nextDay + ";"
