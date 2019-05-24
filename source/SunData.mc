@@ -41,6 +41,7 @@ class SunData {
         eventType = etype;
     }
 
+    (:debug)
     function toString() {
         return timeObtained.value() + ";"
             + locationObtained.position.toDegrees() + ";"

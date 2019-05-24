@@ -18,6 +18,7 @@
 using Toybox.Test;
 using Toybox.Time;
 
+(:debug)
 class SunDataTest {
 
     (:test)
