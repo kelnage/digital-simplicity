@@ -18,6 +18,9 @@
  -->
 <drawables>
 	<bitmap id="LauncherIcon" filename="launcher_icon.png" />
+	<bitmap id="AlarmIconBlack" filename="alarm_black.png" />
+	<bitmap id="AlarmIconGray" filename="alarm_gray.png" />
+	<bitmap id="AlarmIconWhite" filename="alarm_white.png" />
 	<bitmap id="BluetoothIconBlack" filename="bt_black.png" />
 	<bitmap id="BluetoothIconGray" filename="bt_gray.png" />
 	<bitmap id="BluetoothIconWhite" filename="bt_white.png" />

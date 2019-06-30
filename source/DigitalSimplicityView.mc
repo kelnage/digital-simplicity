@@ -46,10 +46,13 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     var is24Hour = false;
 
     // bitmaps
+    var alarmIcon;
     var bluetoothIcon;
     var batteryIcon;
 
     // layout constants
+    const alarmX = 79;
+    const alarmY = 92;
     const baselineY = 123;
     const midlineY = 89;
     const batteryX = 178;
@@ -112,14 +115,51 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             secondsView.setText("");
         }
         switch(colourTheme) {
-            case THEME_CLASSIC_GRAY:
-            case THEME_CLASSIC_WHITE:
+            case THEME_DARK_GRAY:
+            case THEME_DARK_WHITE:
+                bgColour = Graphics.COLOR_BLACK;
+                if(colourTheme == THEME_DARK_GRAY) {
+                    fgColour = Graphics.COLOR_LT_GRAY;
+                } else {
+                    fgColour = Graphics.COLOR_WHITE;
+                }
+                break;
+            case THEME_INVERSE_GRAY:
+            case THEME_INVERSE_WHITE:
+                bgColour = Graphics.COLOR_BLACK;
+                if(colourTheme == THEME_INVERSE_GRAY) {
+                    fgColour = Graphics.COLOR_LT_GRAY;
+                } else {
+                    fgColour = Graphics.COLOR_WHITE;
+                }
+                break;
+            default:
                 fgColour = Graphics.COLOR_BLACK;
                 if(colourTheme == THEME_CLASSIC_GRAY) {
                     bgColour = Graphics.COLOR_LT_GRAY;
                 } else {
                     bgColour = Graphics.COLOR_WHITE;
                 }
+                break;
+        }
+        switch(colourTheme) {
+            case THEME_DARK_GRAY:
+            case THEME_DARK_WHITE:
+                View.findDrawableById("TopLabel").setColor(fgColour);
+                View.findDrawableById("BottomLabel").setColor(fgColour);
+                break;
+            default:
+                View.findDrawableById("TopLabel").setColor(bgColour);
+                View.findDrawableById("BottomLabel").setColor(bgColour);
+                break;
+        }
+        switch(fgColour) {
+            case Graphics.COLOR_BLACK:
+                alarmIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.AlarmIconBlack,
+                    :locX=>alarmX,
+                    :locY=>alarmY
+                });
                 batteryIcon = new WatchUi.Bitmap({
                     :rezId=>Rez.Drawables.BatteryIconBlack,
                     :locX=>batteryX,
@@ -130,70 +170,40 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     :locX=>bluetoothX,
                     :locY=>bluetoothY
                 });
-                View.findDrawableById("TopLabel").setColor(bgColour);
-                View.findDrawableById("BottomLabel").setColor(bgColour);
                 break;
-            case THEME_DARK_GRAY:
-            case THEME_DARK_WHITE:
-                bgColour = Graphics.COLOR_BLACK;
-                if(colourTheme == THEME_DARK_GRAY) {
-                    fgColour = Graphics.COLOR_LT_GRAY;
-                    batteryIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BatteryIconGray,
-                        :locX=>batteryX,
-                        :locY=>batteryY
-                    });
-                    bluetoothIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BluetoothIconGray,
-                        :locX=>bluetoothX,
-                        :locY=>bluetoothY
-                    });
-                } else {
-                    fgColour = Graphics.COLOR_WHITE;
-                    batteryIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BatteryIconWhite,
-                        :locX=>batteryX,
-                        :locY=>batteryY
-                    });
-                    bluetoothIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BluetoothIconWhite,
-                        :locX=>bluetoothX,
-                        :locY=>bluetoothY
-                    });
-                }
-                View.findDrawableById("TopLabel").setColor(fgColour);
-                View.findDrawableById("BottomLabel").setColor(fgColour);
+            case Graphics.COLOR_LT_GRAY:
+                alarmIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.AlarmIconGray,
+                    :locX=>alarmX,
+                    :locY=>alarmY
+                });
+                batteryIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.BatteryIconGray,
+                    :locX=>batteryX,
+                    :locY=>batteryY
+                });
+                bluetoothIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.BluetoothIconGray,
+                    :locX=>bluetoothX,
+                    :locY=>bluetoothY
+                });
                 break;
-            case THEME_INVERSE_GRAY:
-            case THEME_INVERSE_WHITE:
-                bgColour = Graphics.COLOR_BLACK;
-                if(colourTheme == THEME_INVERSE_GRAY) {
-                    fgColour = Graphics.COLOR_LT_GRAY;
-                    batteryIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BatteryIconGray,
-                        :locX=>batteryX,
-                        :locY=>batteryY
-                    });
-                    bluetoothIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BluetoothIconGray,
-                        :locX=>bluetoothX,
-                        :locY=>bluetoothY
-                    });
-                } else {
-                    fgColour = Graphics.COLOR_WHITE;
-                    batteryIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BatteryIconWhite,
-                        :locX=>batteryX,
-                        :locY=>batteryY
-                    });
-                    bluetoothIcon = new WatchUi.Bitmap({
-                        :rezId=>Rez.Drawables.BluetoothIconWhite,
-                        :locX=>bluetoothX,
-                        :locY=>bluetoothY
-                    });
-                }
-                View.findDrawableById("TopLabel").setColor(bgColour);
-                View.findDrawableById("BottomLabel").setColor(bgColour);
+            case Graphics.COLOR_WHITE:
+                alarmIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.AlarmIconWhite,
+                    :locX=>alarmX,
+                    :locY=>alarmY
+                });
+                batteryIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.BatteryIconWhite,
+                    :locX=>batteryX,
+                    :locY=>batteryY
+                });
+                bluetoothIcon = new WatchUi.Bitmap({
+                    :rezId=>Rez.Drawables.BluetoothIconWhite,
+                    :locX=>bluetoothX,
+                    :locY=>bluetoothY
+                });
                 break;
         }
         dateView.setColor(fgColour);
@@ -268,6 +278,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         drawBatteryStatus(dc, stats.battery);
         if(app.getProperty("DisplayMoveBar")) {
             drawMoveBar(dc, activity.moveBarLevel);
+        }
+        if(settings.alarmCount > 0) {
+            alarmIcon.draw(dc);
         }
         if(settings.phoneConnected) {
             bluetoothIcon.draw(dc);
