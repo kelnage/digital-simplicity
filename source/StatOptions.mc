@@ -95,7 +95,7 @@ class StatOptions {
         return "";
     }
 
-    static function getStatString(index, formatString, sunEvent, activity, settings) {
+    static function getStatString(index, formatString, geo, sunEvent, activity, settings) {
         // System.println("Entering getStatString");
         if(formatString == null) {
             System.println("Did not receive a format string");
@@ -256,9 +256,9 @@ class StatOptions {
                             args = [sample.data.format("%d")];
                         }
                     }
-                } else if(Position.Info has :altitude) {
-                    if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                        args = [locationInfo.altitude.format("%d")];
+                } else if((Position has :Info) && (Position.Info has :altitude)) {
+                    if(geo != null && geo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
+                        args = [geo.altitude.format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -273,9 +273,9 @@ class StatOptions {
                             args = [(sample.data * 3.281).format("%d")];
                         }
                     }
-                } else if(Position.Info has :altitude) {
-                    if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                        args = [locationInfo.altitude.format("%d")];
+                } else if((Position has :Info) && (Position.Info has :altitude)) {
+                    if(geo != null && geo != Position.QUALITY_NOT_AVAILABLE) {
+                        args = [geo.altitude.format("%d")];
                     }
                 } else {
                     return "N/S";

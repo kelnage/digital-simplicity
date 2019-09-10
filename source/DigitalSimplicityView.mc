@@ -41,7 +41,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     }
 
     // state
-    var locationInfo = null;
+    var geo = null;
     var sunEvent = null;
     var is24Hour = false;
 
@@ -242,20 +242,25 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var dateString = getDate(now);
 
         // Format notification count
-        var nc = settings.notificationCount;
         var ncs = "";
-        if(nc == 0) {
-            ncs = "";
-        } else {
-            ncs = nc.format("%d");
+        if(app.getProperty("DisplayNC")) {
+            var nc = settings.notificationCount;
+            if(nc == 0) {
+                ncs = "";
+            } else {
+                ncs = nc.format("%d");
+            }
         }
 
         // Format battery percentage
-        var batteryString = Math.round(stats.battery).format("%d") + "%";
+        var batteryString = "";
+        if(app.getProperty("DisplayBattery")) {
+            batteryString = Math.round(stats.battery).format("%d") + "%";
+        }
 
         // Load appropriate stats
-        var topStatString = StatOptions.getStatString(app.getProperty("TopBarStat"), topFormat, sunEvent, activity, settings);
-        var bottomStatString = StatOptions.getStatString(app.getProperty("BottomBarStat"), bottomFormat, sunEvent, activity, settings);
+        var topStatString = StatOptions.getStatString(app.getProperty("TopBarStat"), topFormat, geo, sunEvent, activity, settings);
+        var bottomStatString = StatOptions.getStatString(app.getProperty("BottomBarStat"), bottomFormat, geo, sunEvent, activity, settings);
 
         // Update the views
         var dateView = View.findDrawableById("DateLabel");
@@ -279,7 +284,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         if(app.getProperty("DisplayMoveBar")) {
             drawMoveBar(dc, activity.moveBarLevel);
         }
-        if(settings.alarmCount > 0) {
+        if(app.getProperty("DisplayAlarm") && settings.alarmCount > 0) {
             alarmIcon.draw(dc);
         }
         if(settings.phoneConnected) {
@@ -362,34 +367,19 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         return Lang.format("$1$ $2$", [days[time.day_of_week - 1], time.day]);
     }
 
-    function parseActivityInfo(activityInfo) {
-        var locationInfo = new Position.Info();
-        if(Activity.Info has :currentLocationAccuracy && activityInfo.currentLocationAccuracy != null) {
-            locationInfo.accuracy = activityInfo.currentLocationAccuracy;
-            if(Position.Info has :position && Activity.Info has :currentLocation) {
-                locationInfo.position = activityInfo.currentLocation;
-            }
-            if(Position.Info has :altitude && Activity.Info has :altitude) {
-                locationInfo.altitude = activityInfo.altitude;
-            }
-        } else {
-            locationInfo.accuracy = Position.QUALITY_NOT_AVAILABLE;
-        }
-        return locationInfo;
-    }
-
     function updatePosition() {
         // System.println("Entering updatePosition");
         var top = Application.getApp().getProperty("TopBarStat");
         var bottom = Application.getApp().getProperty("BottomBarStat");
         if(StatOptions.requiresLocation(top) || StatOptions.requiresLocation(bottom)) {
             if(Position has :getInfo) {
-                locationInfo = Position.getInfo();
+                geo = GeoData.parsePositionInfo(Position.getInfo());
             }
-            if((locationInfo == null || locationInfo.accuracy == Position.QUALITY_NOT_AVAILABLE) && Activity has :getActivityInfo && Activity.Info has :currentLocation) {
-                locationInfo = parseActivityInfo(Activity.getActivityInfo());
+            if((geo == null || geo.accuracy == Position.QUALITY_NOT_AVAILABLE) &&
+                    Activity has :getActivityInfo && Activity.Info has :currentLocation) {
+                geo = GeoData.parseActivityInfo(Activity.getActivityInfo());
             }
-            if(locationInfo != null && locationInfo.accuracy != Position.QUALITY_NOT_AVAILABLE &&
+            if(geo != null && geo.accuracy != Position.QUALITY_NOT_AVAILABLE &&
                     (StatOptions.requiresSunData(top) || StatOptions.requiresSunData(bottom))) {
                 var now = Time.now();
                 if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
@@ -397,7 +387,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
                     // TODO: location based checks?
                     ) {
                     // Using Time.today() rather than Time.now()
-                    sunEvent = SunData.calculateSunriseSunset(Time.today(), locationInfo, false, sunEvent);
+                    sunEvent = SunData.calculateSunriseSunset(Time.today(), geo, false, sunEvent);
                 }
             }
         }
