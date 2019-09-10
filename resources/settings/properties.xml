@@ -24,5 +24,8 @@
     <property id="DisplaySeconds" type="boolean">false</property>
     <property id="DisplayMoveBar" type="boolean">false</property>
     <property id="ColourTheme" type="number">0</property>
+    <property id="DisplayAlarm" type="boolean">false</property>
+    <property id="DisplayNC" type="boolean">true</property>
+    <property id="DisplayBattery" type="boolean">true</property>
 
 </properties>

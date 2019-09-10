@@ -26,6 +26,9 @@
 	<string id="BlinkColon">Blink colon</string>
 	<string id="ShowSeconds">Show seconds</string>
 	<string id="MoveBar">Display move bar</string>
+	<string id="AlarmIcon">Display alarm icon</string>
+	<string id="NotificationCount">Display notification count</string>
+	<string id="BatteryText">Display battery text</string>
 	
 	<string id="ColourTheme">Colour theme</string>
 	<string id="ClassicGray">Classic - gray</string>

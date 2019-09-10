@@ -86,4 +86,16 @@
     <setting propertyKey="@Properties.DisplayMoveBar" title="@Strings.MoveBar">
         <settingConfig type="boolean" />
     </setting>
+
+    <setting propertyKey="@Properties.DisplayAlarm" title="@Strings.AlarmIcon">
+        <settingConfig type="boolean" />
+    </setting>
+
+    <setting propertyKey="@Properties.DisplayNC" title="@Strings.NotificationCount">
+        <settingConfig type="boolean" />
+    </setting>
+
+    <setting propertyKey="@Properties.DisplayBattery" title="@Strings.BatteryText">
+        <settingConfig type="boolean" />
+    </setting>
 </settings>
