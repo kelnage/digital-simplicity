@@ -16,6 +16,7 @@
 */
 
 using Toybox.Position;
+using Toybox.Activity;
 
 // Apparently we can't rely on the class Position.Info to exist, so let's make our own...
 class GeoData {
