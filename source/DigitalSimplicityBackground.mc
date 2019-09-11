@@ -16,6 +16,7 @@
 */
 
 using Toybox.WatchUi as Ui;
+using Toybox.Graphics;
 
 class Background extends Ui.Drawable {
     function initialize() {
@@ -28,27 +29,53 @@ class Background extends Ui.Drawable {
 
     function draw(dc) {
         var app = Application.getApp();
-        var mainBackground;
+        var backColour;
+        var lineColour;
+        var rectColour;
         switch(app.getProperty("ColourTheme")) {
             case DigitalSimplicityView.THEME_CLASSIC_GRAY:
-                mainBackground = new Rez.Drawables.ClassicGrayBackground();
+                backColour = Graphics.COLOR_BLACK;
+                lineColour = Graphics.COLOR_BLACK;
+                rectColour = Graphics.COLOR_LT_GRAY;
                 break;
             case DigitalSimplicityView.THEME_CLASSIC_WHITE:
-                mainBackground = new Rez.Drawables.ClassicWhiteBackground();
+                backColour = Graphics.COLOR_BLACK;
+                lineColour = Graphics.COLOR_BLACK;
+                rectColour = Graphics.COLOR_WHITE;
                 break;
             case DigitalSimplicityView.THEME_DARK_GRAY:
-                mainBackground = new Rez.Drawables.DarkGrayForeground();
+                backColour = Graphics.COLOR_BLACK;
+                lineColour = Graphics.COLOR_LT_GRAY;
+                rectColour = Graphics.COLOR_BLACK;
                 break;
             case DigitalSimplicityView.THEME_DARK_WHITE:
-                mainBackground = new Rez.Drawables.DarkWhiteForeground();
+                backColour = Graphics.COLOR_BLACK;
+                lineColour = Graphics.COLOR_WHITE;
+                rectColour = Graphics.COLOR_BLACK;
                 break;
             case DigitalSimplicityView.THEME_INVERSE_GRAY:
-                mainBackground = new Rez.Drawables.InverseGrayForeground();
+                backColour = Graphics.COLOR_LT_GRAY;
+                lineColour = Graphics.COLOR_LT_GRAY;
+                rectColour = Graphics.COLOR_BLACK;
                 break;
             case DigitalSimplicityView.THEME_INVERSE_WHITE:
-                mainBackground = new Rez.Drawables.InverseWhiteForeground();
+                backColour = Graphics.COLOR_WHITE;
+                lineColour = Graphics.COLOR_WHITE;
+                rectColour = Graphics.COLOR_BLACK;
                 break;
         }
-        mainBackground.draw( dc );
+        dc.setColor(rectColour, backColour);
+        dc.clear();
+        dc.fillRectangle(0, 40, 240, 160);
+        dc.setColor(lineColour, backColour);
+        dc.setPenWidth(3);
+        // top line
+        dc.drawLine(33, 44, 207, 44);
+        // bottom line
+        dc.drawLine(33, 195, 207, 195);
+        // left arc
+        dc.drawArc(120, 120, 116, Graphics.ARC_COUNTER_CLOCKWISE, 139, 221);
+        // right arc
+        dc.drawArc(119, 120, 116, Graphics.ARC_CLOCKWISE, 41, 319);
     }
 }
