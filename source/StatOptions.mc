@@ -20,8 +20,8 @@ using Toybox.Lang;
 using Toybox.Math;
 using Toybox.WatchUi;
 
-class StatOptions {
-    static enum {
+module StatOptions {
+    enum {
         OPTION_CALORIES,
         OPTION_KILOJOULES,
         OPTION_STEPS,
@@ -42,60 +42,62 @@ class StatOptions {
         OPTION_DISTANCE_MILES
     }
 
-    static function requiresLocation(index) {
+    const formatStrings = {
+        OPTION_CALORIES => Rez.Strings.CaloriesFormat,
+        OPTION_KILOJOULES => Rez.Strings.KilojoulesFormat,
+        OPTION_STEPS => Rez.Strings.StepsFormat,
+        OPTION_DISTANCE_METRES => Rez.Strings.MetresFormat,
+        OPTION_DISTANCE_FEET => Rez.Strings.FeetFormat,
+        OPTION_ACTIVITY_MIN_DAY => Rez.Strings.MinFormat,
+        OPTION_ACTIVITY_MIN_WEEK => Rez.Strings.MinFormat,
+        OPTION_FLOORS_ASCENDED => Rez.Strings.FloorsClimbedFormat,
+        OPTION_HEART_RATE => Rez.Strings.HeartRateFormat,
+        OPTION_SUN_EVENT => Rez.Strings.TimeFormat,
+        OPTION_PRESSURE => Rez.Strings.PressureFormat,
+        OPTION_TEMPERATURE_C => Rez.Strings.TemperatureCelsiusFormat,
+        OPTION_TEMPERATURE_F => Rez.Strings.TemperatureFahrenheitFormat,
+        OPTION_ALTITUDE_METRES => Rez.Strings.MetresFormat,
+        OPTION_ALTITUDE_FEET => Rez.Strings.FeetFormat,
+        OPTION_DISTANCE_KILOMETRES => Rez.Strings.KilometresFormat,
+        OPTION_DISTANCE_MILES => Rez.Strings.MilesFormat
+    };
+
+    function requiresLocation(index) {
         return StatOptions.requiresSunData(index) ||
-            ((index == OPTION_ALTITUDE_METRES || index == OPTION_ALTITUDE_FEET) && !(Toybox has :SensorHistory && Toybox.SensorHistory has :getElevationHistory));
+            ((index == OPTION_ALTITUDE_METRES || index == OPTION_ALTITUDE_FEET) && !hasSensorHistory(:getElevationHistory));
     }
 
-    static function requiresSunData(index) {
+    function requiresSunData(index) {
         return index == OPTION_SUN_EVENT;
     }
 
-    static function getFormatString(index) {
-        // System.println("Entering getFormatString");
-        switch(index) {
-            case OPTION_CALORIES:
-                return WatchUi.loadResource(Rez.Strings.CaloriesFormat);
-            case OPTION_KILOJOULES:
-                return WatchUi.loadResource(Rez.Strings.KilojoulesFormat);
-            case OPTION_STEPS:
-                return WatchUi.loadResource(Rez.Strings.StepsFormat);
-            case OPTION_DISTANCE_METRES:
-                return WatchUi.loadResource(Rez.Strings.MetresFormat);
-            case OPTION_DISTANCE_FEET:
-                return WatchUi.loadResource(Rez.Strings.FeetFormat);
-            case OPTION_ACTIVITY_MIN_DAY:
-                return WatchUi.loadResource(Rez.Strings.MinFormat);
-            case OPTION_ACTIVITY_MIN_WEEK:
-                return WatchUi.loadResource(Rez.Strings.MinFormat);
-            case OPTION_FLOORS_ASCENDED:
-                return WatchUi.loadResource(Rez.Strings.FloorsClimbedFormat);
-            case OPTION_NOTHING:
-                break;
-            case OPTION_HEART_RATE:
-                return WatchUi.loadResource(Rez.Strings.HeartRateFormat);
-            case OPTION_SUN_EVENT:
-                return WatchUi.loadResource(Rez.Strings.TimeFormat);
-            case OPTION_PRESSURE:
-                return WatchUi.loadResource(Rez.Strings.PressureFormat);
-            case OPTION_TEMPERATURE_C:
-                return WatchUi.loadResource(Rez.Strings.TemperatureCelsiusFormat);
-            case OPTION_TEMPERATURE_F:
-                return WatchUi.loadResource(Rez.Strings.TemperatureFahrenheitFormat);
-            case OPTION_ALTITUDE_METRES:
-                return WatchUi.loadResource(Rez.Strings.MetresFormat);
-            case OPTION_ALTITUDE_FEET:
-                return WatchUi.loadResource(Rez.Strings.FeetFormat);
-            case OPTION_DISTANCE_KILOMETRES:
-                return WatchUi.loadResource(Rez.Strings.KilometresFormat);
-            case OPTION_DISTANCE_MILES:
-                return WatchUi.loadResource(Rez.Strings.MilesFormat);
-        }
-        // System.println("Exiting getFormatString without a result");
-        return "";
+    function hasSensorHistory(type) {
+        return (Toybox has :SensorHistory) && (Toybox.SensorHistory has type);
     }
 
-    static function getStatString(index, formatString, geo, sunEvent, activity, settings) {
+    function getFirstValue(history) {
+        var getHist = new Toybox.Lang.Method(Toybox.SensorHistory, type);
+        var it = getHist.invoke({:period => 1});
+        if(it != null) {
+            var sample = it.next();
+            if(sample != null) {
+                return sample.data;
+            }
+        }
+        return null;
+    }
+
+    function getFormatString(index) {
+        // System.println("Entering getFormatString");
+        var resource = formatStrings[index];
+        if(resource == null) {
+            // System.println("Exiting getFormatString without a result");
+            return "";
+        }
+        return WatchUi.loadResource(resource);
+    }
+
+    function getStatString(index, formatString, geo, sunEvent, activity, settings) {
         // System.println("Entering getStatString");
         if(formatString == null) {
             System.println("Did not receive a format string");
@@ -179,13 +181,10 @@ class StatOptions {
             case OPTION_NOTHING:
                 return "";
             case OPTION_HEART_RATE:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getHeartRateHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getHeartRateHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            args = [Math.floor(sample.data).format("%d")];
-                        }
+                if(hasSensorHistory(:getHeartRateHistory)) {
+                    var data = getFirstValue(:getHeartRateHistory);
+                    if(data != null) {
+                        args = [Math.floor(data).format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -209,52 +208,40 @@ class StatOptions {
                 }
                 break;
             case OPTION_PRESSURE:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getPressureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getPressureHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            args = [(sample.data / 100).format("%.1f")];
-                        }
+                if(hasSensorHistory(:getPressureHistory)) {
+                    var data = getFirstValue(:getPressureHistory);
+                    if(data != null) {
+                        args = [(data / 100).format("%.1f")];
                     }
                 } else {
                     return "N/S";
                 }
                 break;
             case OPTION_TEMPERATURE_C:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getTemperatureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            args = [sample.data.format("%.1f")];
-                        }
+                if(hasSensorHistory(:getTemperatureHistory)) {
+                    var data = getFirstValue(:getTemperatureHistory);
+                    if(data != null) {
+                        args = [data.format("%.1f")];
                     }
                 } else {
                     return "N/S";
                 }
                 break;
             case OPTION_TEMPERATURE_F:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getTemperatureHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getTemperatureHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            args = [((sample.data * 1.8) + 32).format("%.1f")];
-                        }
+                if(hasSensorHistory(:getTemperatureHistory)) {
+                    var data = getFirstValue(:getTemperatureHistory);
+                    if(data != null) {
+                        args = [((data * 1.8) + 32).format("%.1f")];
                     }
                 } else {
                     return "N/S";
                 }
                 break;
             case OPTION_ALTITUDE_METRES:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getElevationHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            args = [sample.data.format("%d")];
-                        }
+                if(hasSensorHistory(:getElevationHistory)) {
+                    var data = getFirstValue(:getElevationHistory);
+                    if(data != null) {
+                        args = [data.format("%d")];
                     }
                 } else if(GeoData.valid(geo) && geo.altitude != null) {
                     args = [geo.altitude.format("%d")];
@@ -263,13 +250,10 @@ class StatOptions {
                 }
                 break;
             case OPTION_ALTITUDE_FEET:
-                if((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getElevationHistory)) {
-                    var sampleIterator = Toybox.SensorHistory.getElevationHistory({:period => 1});
-                    if(sampleIterator != null) {
-                        var sample = sampleIterator.next();
-                        if(sample != null && sample.data != null) {
-                            args = [(sample.data * 3.281).format("%d")];
-                        }
+                if(hasSensorHistory(:getElevationHistory)) {
+                    var data = getFirstValue(:getElevationHistory);
+                    if(data != null) {
+                        args = [(data * 3.281).format("%d")];
                     }
                 } else if(GeoData.valid(geo) && geo.altitude != null) {
                     args = [(geo.altitude * 3.281).format("%d")];
