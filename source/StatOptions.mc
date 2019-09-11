@@ -272,7 +272,7 @@ class StatOptions {
                         }
                     }
                 } else if(GeoData.valid(geo) && geo.altitude != null) {
-                    args = [geo.altitude.format("%d")];
+                    args = [(geo.altitude * 3.281).format("%d")];
                 } else {
                     return "N/S";
                 }
