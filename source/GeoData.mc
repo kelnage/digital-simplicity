@@ -22,7 +22,11 @@ class GeoData {
 	var accuracy = Position.QUALITY_NOT_AVAILABLE;
 	var position = null;
 	var altitude = null;
-	
+
+	static function valid(geo) {
+	   return geo != null && geo.accuracy != Position.QUALITY_NOT_AVAILABLE;
+	}
+
 	static function parsePositionInfo(positionInfo) {
 		var locationInfo = new GeoData();
 		if(positionInfo has :accuracy) {
@@ -31,7 +35,7 @@ class GeoData {
 		if(positionInfo has :position) {
 			locationInfo.position = positionInfo.position;
 		}
-		if(positionInfo has :accuracy) {
+		if(positionInfo has :altitude) {
 			locationInfo.altitude = positionInfo.altitude;
 		}
         return locationInfo;

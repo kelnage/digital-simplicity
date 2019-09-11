@@ -375,12 +375,10 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             if(Position has :getInfo) {
                 geo = GeoData.parsePositionInfo(Position.getInfo());
             }
-            if((geo == null || geo.accuracy == Position.QUALITY_NOT_AVAILABLE) &&
-                    Activity has :getActivityInfo && Activity.Info has :currentLocation) {
+            if(!GeoData.valid(geo) && Activity has :getActivityInfo && Activity.Info has :currentLocation) {
                 geo = GeoData.parseActivityInfo(Activity.getActivityInfo());
             }
-            if(geo != null && geo.accuracy != Position.QUALITY_NOT_AVAILABLE &&
-                    (StatOptions.requiresSunData(top) || StatOptions.requiresSunData(bottom))) {
+            if(GeoData.valid(geo) && (StatOptions.requiresSunData(top) || StatOptions.requiresSunData(bottom))) {
                 var now = Time.now();
                 if(sunEvent == null || // if there is no previous reading, definitely calculate the sunrise/set data
                     (now.compare(sunEvent.eventTime) > 0 || now.compare(sunEvent.eventTime) < -43200) // time based checks

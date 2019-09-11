@@ -256,10 +256,8 @@ class StatOptions {
                             args = [sample.data.format("%d")];
                         }
                     }
-                } else if((Position has :Info) && (Position.Info has :altitude)) {
-                    if(geo != null && geo.accuracy != Position.QUALITY_NOT_AVAILABLE) {
-                        args = [geo.altitude.format("%d")];
-                    }
+                } else if(GeoData.valid(geo) && geo.altitude != null) {
+                    args = [geo.altitude.format("%d")];
                 } else {
                     return "N/S";
                 }
@@ -273,10 +271,8 @@ class StatOptions {
                             args = [(sample.data * 3.281).format("%d")];
                         }
                     }
-                } else if((Position has :Info) && (Position.Info has :altitude)) {
-                    if(geo != null && geo != Position.QUALITY_NOT_AVAILABLE) {
-                        args = [geo.altitude.format("%d")];
-                    }
+                } else if(GeoData.valid(geo) && geo.altitude != null) {
+                    args = [geo.altitude.format("%d")];
                 } else {
                     return "N/S";
                 }
