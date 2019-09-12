@@ -75,7 +75,7 @@ module StatOptions {
         return (Toybox has :SensorHistory) && (Toybox.SensorHistory has type);
     }
 
-    function getFirstValue(history) {
+    function getFirstValue(type) {
         var getHist = new Toybox.Lang.Method(Toybox.SensorHistory, type);
         var it = getHist.invoke({:period => 1});
         if(it != null) {
