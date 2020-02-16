@@ -15,6 +15,7 @@
     along with DigitalSimplicity.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using Toybox.Activity;
 using Toybox.ActivityMonitor;
 using Toybox.Lang;
 using Toybox.Math;
@@ -97,7 +98,7 @@ module StatOptions {
         return WatchUi.loadResource(resource);
     }
 
-    function getStatString(index, formatString, geo, sunEvent, activity, settings) {
+    function getStatString(index, formatString, geo, sunEvent, actInfo, actMonInfo, settings) {
         // System.println("Entering getStatString");
         if(formatString == null) {
             System.println("Did not receive a format string");
@@ -107,8 +108,8 @@ module StatOptions {
         switch(index) {
             case OPTION_CALORIES:
                 if(ActivityMonitor.Info has :calories) {
-                    if(activity.calories != null) {
-                        args = [activity.calories];
+                    if(actMonInfo.calories != null) {
+                        args = [actMonInfo.calories];
                     }
                 } else {
                     return "N/S";
@@ -116,8 +117,8 @@ module StatOptions {
                 break;
             case OPTION_KILOJOULES:
                 if(ActivityMonitor.Info has :calories) {
-                    if(activity.calories != null) {
-                        args = [Math.floor(activity.calories * 4.184).format("%d")];
+                    if(actMonInfo.calories != null) {
+                        args = [Math.floor(actMonInfo.calories * 4.184).format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -125,8 +126,8 @@ module StatOptions {
                 break;
             case OPTION_STEPS:
                 if(ActivityMonitor.Info has :steps) {
-                    if(activity.steps != null) {
-                        args = [activity.steps];
+                    if(actMonInfo.steps != null) {
+                        args = [actMonInfo.steps];
                     }
                 }
                 else {
@@ -135,8 +136,8 @@ module StatOptions {
                 break;
             case OPTION_DISTANCE_METRES:
                 if(ActivityMonitor.Info has :distance) {
-                    if(activity.distance != null) {
-                        args = [Math.floor(activity.distance / 100).format("%d")];
+                    if(actMonInfo.distance != null) {
+                        args = [Math.floor(actMonInfo.distance / 100).format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -144,8 +145,8 @@ module StatOptions {
                 break;
             case OPTION_DISTANCE_FEET:
                 if(ActivityMonitor.Info has :distance) {
-                    if(activity.distance != null) {
-                        args = [Math.floor(activity.distance / 30.48).format("%d")];
+                    if(actMonInfo.distance != null) {
+                        args = [Math.floor(actMonInfo.distance / 30.48).format("%d")];
                     }
                 } else {
                     return "N/S";
@@ -153,8 +154,8 @@ module StatOptions {
                 break;
             case OPTION_ACTIVITY_MIN_DAY:
                 if(ActivityMonitor.Info has :activeMinutesDay) {
-                    if(activity.activeMinutesDay != null) {
-                        args = [activity.activeMinutesDay.total];
+                    if(actMonInfo.activeMinutesDay != null) {
+                        args = [actMonInfo.activeMinutesDay.total];
                     }
                 } else {
                     return "N/S";
@@ -162,8 +163,8 @@ module StatOptions {
                 break;
             case OPTION_ACTIVITY_MIN_WEEK:
                 if(ActivityMonitor.Info has :activeMinutesWeek) {
-                    if(activity.activeMinutesWeek != null) {
-                        args = [activity.activeMinutesWeek.total];
+                    if(actMonInfo.activeMinutesWeek != null) {
+                        args = [actMonInfo.activeMinutesWeek.total];
                     }
                 } else {
                     return "N/S";
@@ -171,8 +172,8 @@ module StatOptions {
                 break;
             case OPTION_FLOORS_ASCENDED:
                 if(ActivityMonitor.Info has :floorsClimbed) {
-                    if(activity.floorsClimbed != null) {
-                        args = [activity.floorsClimbed];
+                    if(actMonInfo.floorsClimbed != null) {
+                        args = [actMonInfo.floorsClimbed];
                     }
                 } else {
                     return "N/S";
@@ -181,8 +182,12 @@ module StatOptions {
             case OPTION_NOTHING:
                 return "";
             case OPTION_HEART_RATE:
-                if(hasSensorHistory(:getHeartRateHistory)) {
-                    var data = getFirstValue(:getHeartRateHistory);
+                if(Activity.Info has :currentHeartRate) {
+                    if(actInfo.currentHeartRate != null) {
+                        args = [Math.floor(actInfo.currentHeartRate).format("%d")];
+                    }
+                } else if(hasSensorHistory(:getHeartRateHistory)) {
+                    data = getFirstValue(:getHeartRateHistory);
                     if(data != null) {
                         args = [Math.floor(data).format("%d")];
                     }
@@ -263,8 +268,8 @@ module StatOptions {
                 break;
             case OPTION_DISTANCE_KILOMETRES:
                 if(ActivityMonitor.Info has :distance) {
-                    if(activity.distance != null) {
-                        args = [(activity.distance / 100000.0).format("%.2f")];
+                    if(actMonInfo.distance != null) {
+                        args = [(actMonInfo.distance / 100000.0).format("%.2f")];
                     }
                 } else {
                     return "N/S";
@@ -272,8 +277,8 @@ module StatOptions {
                 break;
             case OPTION_DISTANCE_MILES:
                 if(ActivityMonitor.Info has :distance) {
-                    if(activity.distance != null) {
-                        args = [(activity.distance / 160934.4).format("%.2f")];
+                    if(actMonInfo.distance != null) {
+                        args = [(actMonInfo.distance / 160934.4).format("%.2f")];
                     }
                 } else {
                     return "N/S";

@@ -235,7 +235,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         // Get data
         var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var stats = System.getSystemStats();
-        var activity = ActivityMonitor.getInfo();
+        var actInfo = Activity.getActivityInfo();
+        var actMonInfo = ActivityMonitor.getInfo();
         var app = Application.getApp();
 
         // Format date and time appropriately
@@ -259,8 +260,8 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         }
 
         // Load appropriate stats
-        var topStatString = StatOptions.getStatString(app.getProperty("TopBarStat"), topFormat, geo, sunEvent, activity, settings);
-        var bottomStatString = StatOptions.getStatString(app.getProperty("BottomBarStat"), bottomFormat, geo, sunEvent, activity, settings);
+        var topStatString = StatOptions.getStatString(app.getProperty("TopBarStat"), topFormat, geo, sunEvent, actInfo, actMonInfo, settings);
+        var bottomStatString = StatOptions.getStatString(app.getProperty("BottomBarStat"), bottomFormat, geo, sunEvent, actInfo, actMonInfo, settings);
 
         // Update the views
         var dateView = View.findDrawableById("DateLabel");
@@ -282,7 +283,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         batteryIcon.draw(dc);
         drawBatteryStatus(dc, stats.battery);
         if(app.getProperty("DisplayMoveBar")) {
-            drawMoveBar(dc, activity.moveBarLevel);
+            drawMoveBar(dc, actMonInfo.moveBarLevel);
         }
         if(app.getProperty("DisplayAlarm") && settings.alarmCount > 0) {
             alarmIcon.draw(dc);

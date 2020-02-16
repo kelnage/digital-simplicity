@@ -28,12 +28,13 @@ class DigitalSimplicityTest {
         var app = Application.getApp();
         var geo = GeoData.parsePositionInfo(Position.getInfo());
         var sunEvent = SunData.calculateSunriseSunset(Time.today(), geo, false, null);
-        var activity = ActivityMonitor.getInfo();
+        var actInfo = Activity.getActivityInfo();
+        var actMonInfo = ActivityMonitor.getInfo();
         var settings = System.getDeviceSettings();
         
         for(var i = 0; i < 18; i++) {
             logger.debug("Bar Test #" + i);
-            StatOptions.getStatString(i, StatOptions.getFormatString(i), geo, sunEvent, activity, settings);
+            StatOptions.getStatString(i, StatOptions.getFormatString(i), geo, sunEvent, actInfo, actMonInfo, settings);
         }
         return true;
     }
