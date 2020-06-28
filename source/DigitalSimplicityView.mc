@@ -319,6 +319,9 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             if (hours > 12) {
                 hours = hours - 12;
             }
+            if(hours == 0) {
+                hours = 12;
+            }
         }
         var hoursView = View.findDrawableById("HoursLabel");
         var minutesView = View.findDrawableById("MinutesLabel");
@@ -327,7 +330,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             var secondsView = View.findDrawableById("SecondsLabel");
             secondsView.setText(now.sec.format("%02d"));
         }
-        hoursView.setText(hours + "");
+        hoursView.setText(hours.format("%d"));
         minutesView.setText(minutes);
         periodView.setText(period);
     }
