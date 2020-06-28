@@ -14,10 +14,6 @@ If you encounter any issues whilst using this watch-face, I definitely want hear
 
 It is the number of notifications on the connected device. Hiding this in a latter update is planned.
 
-## Why doesn't this watchface display an alarm icon when one is enabled?
-
-Because that feature hasn't been added yet! It is planned.
-
 ## How performant is this watch-face?
 
 TL;DR: to optimise battery usage, disable blink colon (which increases the power usage a little) and do not display seconds (increases power usage significantly).
