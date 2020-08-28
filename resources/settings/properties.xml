@@ -27,5 +27,6 @@
     <property id="DisplayAlarm" type="boolean">false</property>
     <property id="DisplayNC" type="boolean">true</property>
     <property id="DisplayBattery" type="boolean">true</property>
+    <property id="DisplayMonth" type="boolean">false</property>
 
 </properties>

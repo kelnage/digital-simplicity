@@ -98,4 +98,8 @@
     <setting propertyKey="@Properties.DisplayBattery" title="@Strings.BatteryText">
         <settingConfig type="boolean" />
     </setting>
+    
+    <setting propertyKey="@Properties.DisplayMonth" title="@Strings.IncludeMonth">
+        <settingConfig type="boolean" />
+    </setting>
 </settings>

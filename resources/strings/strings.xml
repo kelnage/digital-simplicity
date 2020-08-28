@@ -29,6 +29,7 @@
 	<string id="AlarmIcon">Display alarm icon</string>
 	<string id="NotificationCount">Display notification count</string>
 	<string id="BatteryText">Display battery text</string>
+	<string id="IncludeMonth">Display month in date</string>
 	
 	<string id="ColourTheme">Colour theme</string>
 	<string id="ClassicGray">Classic - gray</string>
