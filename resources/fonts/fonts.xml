@@ -22,5 +22,5 @@
 	<font id="DigitalSmall" filename="digital_fnt_sml.fnt"
 		filter="%0123456789 adefhimnoprstuw" />
 	<font id="DigitalSmallBold" filename="digital_fnt_sml_bold.fnt"
-		filter="%0123456789 adefhimnoprstuw" />
+		filter="%0123456789 abcdefghijlmnoprstuvwy" />
 </resources>
