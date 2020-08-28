@@ -17,6 +17,7 @@
 
 using Toybox.Test;
 using Toybox.Time;
+using Toybox.Time.Gregorian;
 
 (:debug)
 class DateTest {
@@ -33,6 +34,34 @@ class DateTest {
                 letters.put(trigraph.substring(j, j+1), true);
             }
             time = time.add(new Time.Duration(86400));
+        }
+        var uniqueLetters = letters.keys();
+        // System.print("fre: ");
+        for(var k = 0; k < uniqueLetters.size(); k++) {
+            System.print(uniqueLetters[k]);
+        }
+        System.println("");
+        return true;
+    }
+    
+    (:test)
+    function testMonthStrings(logger) {
+        var letters = {};
+        var options = {
+            :year   => 2020,
+            :month  => 1,
+            :day    => 1,
+            :hour   => 0
+        };
+        var time = Gregorian.moment(options);
+        for(var i = 0; i < 12; i++) {
+            var info = Time.Gregorian.info(time, Time.FORMAT_MEDIUM);
+            System.println(info.month + ": " + info.month.toLower());
+            var trigraph = info.month.toLower();
+            for(var j = 0; j < 3; j++) {
+                letters.put(trigraph.substring(j, j+1), true);
+            }
+            time = time.add(new Time.Duration(32*86400));
         }
         var uniqueLetters = letters.keys();
         // System.print("fre: ");

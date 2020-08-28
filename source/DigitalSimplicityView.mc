@@ -64,6 +64,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     const colonY = 123;
     // workaround until font is completed
     const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+    const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
     // layout variables
     var fgColour = Graphics.COLOR_BLACK;
@@ -240,7 +241,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         var app = Application.getApp();
 
         // Format date and time appropriately
-        var dateString = getDate(now);
+        var dateString = getDate(now, app.getProperty("DisplayMonth"));
 
         // Format notification count
         var ncs = "";
@@ -366,8 +367,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
         dc.fillRectangle(33, 194, moveNumber * 35, 3);
     }
 
-    function getDate(time) {
+    function getDate(time, includeMonth) {
         // Assumes Time.FORMAT_SHORT
+        if(includeMonth) {
+            return Lang.format("$1$ $2$ $3$", [days[time.day_of_week - 1], time.day, months[time.month - 1]]);
+        }
         return Lang.format("$1$ $2$", [days[time.day_of_week - 1], time.day]);
     }
 
