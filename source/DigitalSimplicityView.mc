@@ -51,7 +51,6 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     var batteryIcon;
 
     // layout constants
-    const alarmX = 79;
     const alarmY = 92;
     const baselineY = 123;
     const midlineY = 89;
@@ -70,6 +69,7 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
     var fgColour = Graphics.COLOR_BLACK;
     var bgColour = Graphics.COLOR_LT_GRAY;
     var moveColour = Graphics.COLOR_DK_RED;
+    var alarmX = 79;
     var colonX = 130;
     var secondsX = 191;
     var topFormat;
@@ -114,6 +114,11 @@ class DigitalSimplicityView extends WatchUi.WatchFace {
             minutesView.setLocation(210, baselineY);
             colonX = 130;
             secondsView.setText("");
+        }
+        if(app.getProperty("DisplayMonth")) {
+            alarmX = 35;
+        } else {
+            alarmX = 79;
         }
         switch(colourTheme) {
             case THEME_DARK_GRAY:
